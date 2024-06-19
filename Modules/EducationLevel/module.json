@@ -1,0 +1,11 @@
+{
+    "name": "EducationLevel",
+    "alias": "educationlevel",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\EducationLevel\\Providers\\EducationLevelServiceProvider"
+    ],
+    "files": []
+}
