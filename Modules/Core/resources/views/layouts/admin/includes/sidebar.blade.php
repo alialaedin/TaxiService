@@ -40,6 +40,13 @@
         </a>
       </li>
 
+      <li class="slide">
+        <a class="side-menu__item" href="{{route("admin.schools.index")}}">
+          <i class="feather feather-home sidemenu_icon"></i>
+          <span class="side-menu__label">مدرسه ها</span>
+        </a>
+      </li>
+
       {{-- @canany(['view customers', 'view employees', 'view suppliers'])
         <li class="slide">
           <a class="side-menu__item" data-toggle="slide" href="#">

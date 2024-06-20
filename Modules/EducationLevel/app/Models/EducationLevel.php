@@ -2,7 +2,10 @@
 
 namespace Modules\EducationLevel\Models;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Modules\Core\Models\BaseModel;
+use Modules\School\Models\School;
 
 class EducationLevel extends BaseModel
 {
@@ -41,5 +44,19 @@ class EducationLevel extends BaseModel
   public function getGender(): string
   {
     return static::GENDERS[$this->attributes['gender']];
+  }
+
+  public static function getAllEducationLevels(): Collection|array
+  {
+    return EducationLevel::query()
+      ->where('status', '=', 1)
+      ->select('id', 'title', 'gender')
+      ->get();
+  }
+
+  // Relations
+  public function schools(): BelongsToMany
+  {
+    return $this->belongsToMany(School::class);
   }
 }

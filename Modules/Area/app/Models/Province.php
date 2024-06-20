@@ -2,12 +2,9 @@
 
 namespace Modules\Area\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use Modules\Area\Database\Factories\ProvinceFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Core\Models\BaseModel;
 
@@ -23,6 +20,9 @@ class Province extends BaseModel
 
     if (Cache::has('all_provinces')) {
       Cache::forget('all_provinces');
+    }
+    if (Cache::has('all_provinces_with_cities')) {
+      Cache::forget('all_provinces_with_cities');
     }
   }
 
@@ -46,6 +46,15 @@ class Province extends BaseModel
         ->where('status', 1)
         ->pluck('name', 'id');
     });
+  }
+
+  public static function getAllProvincesWithCities(): Collection|array
+  {
+    return Province::query()
+      ->where('status', 1)
+      ->select('id', 'name')
+      ->with('cities')
+      ->get();
   }
 
   public function cities(): HasMany

@@ -6,14 +6,14 @@ use Illuminate\Database\Seeder;
 
 class AreaDatabaseSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
-         $this->call([
-//           ProvinceTableSeeder::class,
-           CityTableSeeder::class
-         ]);
-    }
+  /**
+   * Run the database seeds.
+   */
+  public function run(): void
+  {
+    $this->call([
+      ProvinceTableSeeder::class,
+      CityTableSeeder::class
+    ]);
+  }
 }

@@ -1,64 +1,68 @@
 <?php
 
-namespace Modules\Company\Http\Controllers\Admin;
+namespace Modules\School\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Modules\Area\Models\Province;
-use Modules\Company\Http\Requests\Admin\CompanyStoreRequest;
-use Modules\Company\Http\Requests\Admin\CompanyUpdateRequest;
-use Modules\Company\Models\Company;
+use Modules\EducationLevel\Models\EducationLevel;
+use Modules\School\Http\Requests\Admin\SchoolStoreRequest;
+use Modules\School\Models\School;
+use Modules\SchoolType\Models\SchoolType;
+use Modules\Shift\Models\Shift;
 
-class CompanyController extends Controller
+class SchoolController extends Controller
 {
   public function index(): View
   {
-    $title = request('title');
-    $name = request('name');
-    $mobile = request('mobile');
+    $shiftId = request('shift_id');
+    $title= request('title');
     $status = request('status');
+    $isTraffic = request('is_traffic');
 
-    $companies = Company::query()
-      ->select('id', 'title', 'name', 'mobile', 'city_id', 'status', 'logo', 'created_at')
+    $schools = School::query()
+      ->select(['id', 'shift_id', 'school_type_id', 'title', 'telephone', 'status', 'is_traffic', 'created_at'])
+      ->when($shiftId, fn(Builder $query) => $query->where('shift_id', '=', $shiftId))
       ->when($title, fn(Builder $query) => $query->where('title', 'like', "%$title%"))
-      ->when($name, fn(Builder $query) => $query->where('name', 'like', "%$name%"))
-      ->when($mobile, fn(Builder $query) => $query->where('mobile', '=', $mobile))
-      ->when(isset($title), fn(Builder $query) => $query->where('status', '=', $status))
+      ->when(isset($status), fn(Builder $query) => $query->where('status', '=', $status))
+      ->when(isset($isTraffic), fn(Builder $query) => $query->where('is_traffic', '=', $isTraffic))
       ->with([
-        'city' => fn($query) => $query->select('id', 'name', 'province_id'),
-        'city.province' => fn($query) => $query->select('id', 'name')
+        'shift' => fn($query) => $query->select('id', 'title'),
+        'schoolType' => fn($query) => $query->select('id', 'title'),
+        'city' => fn($query) => $query->select('id', 'name'),
       ])
       ->latest('id')
       ->paginate()
       ->withQueryString();
 
-    $totalCompanies = $companies->total();
+    $totalSchools = $schools->total();
 
-    return view('company::index', compact(['companies', 'totalCompanies']));
+    return view('school::index', compact(['schools', 'totalSchools']));
   }
 
-  public function show(Company $company): View
+  public function show(School $company): View
   {
     $company->load([
       'city' => fn($query) => $query->select('id', 'name', 'province_id'),
       'city.province' => fn($query) => $query->select('id', 'name')
     ]);
 
-    return view('company::show', compact('company'));
+    return view('school::show', compact('company'));
   }
 
   public function create(): View
   {
     $provinces = Province::getAllProvincesWithCities();
+    $educationLevels = EducationLevel::getAllEducationLevels();
+    $shifts = Shift::getAllShifts();
+    $schoolTypes = SchoolType::getAllSchoolTypes();
 
-    return view('company::create', compact('provinces'));
+    return view('school::create', compact(['provinces', 'educationLevels', 'shifts', 'schoolTypes']));
   }
 
-  public function store(CompanyStoreRequest $request): RedirectResponse
+  public function store(SchoolStoreRequest $request): RedirectResponse
   {
     $inputs = Company::getFormInputs($request);
 
@@ -80,7 +84,7 @@ class CompanyController extends Controller
   {
     $provinces = Province::getAllProvincesWithCities();
 
-    return view('company::edit', compact(['company', 'provinces']));
+    return view('school::edit', compact(['company', 'provinces']));
   }
 
   public function update(CompanyUpdateRequest $request, Company $company): RedirectResponse

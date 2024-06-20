@@ -2,7 +2,10 @@
 
 namespace Modules\Shift\Models;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Core\Models\BaseModel;
+use Modules\School\Models\School;
 
 class Shift extends BaseModel
 {
@@ -30,4 +33,18 @@ class Shift extends BaseModel
 	{
 		return static::BADGE_TYPE[$this->attributes['status']];
 	}
+
+  public static function getAllShifts(): Collection|array
+  {
+    return Shift::query()
+      ->where('status', '=', 1)
+      ->select('id', 'title')
+      ->get();
+  }
+
+  // Relations
+  public function schools(): HasMany
+  {
+    return $this->hasMany(School::class);
+  }
 }

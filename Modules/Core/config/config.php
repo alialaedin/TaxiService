@@ -44,4 +44,9 @@ return [
     'male' => 'مرد',
     'female' => 'زن'
   ],
+
+  'badge_types' => [
+    '0' => 'danger',
+    '1' => 'success'
+  ]
 ];

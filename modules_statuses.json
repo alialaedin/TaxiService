@@ -6,5 +6,6 @@
     "SchoolType": true,
     "EducationLevel": true,
     "Area": true,
-    "Company": true
+    "Company": true,
+    "School": true
 }
