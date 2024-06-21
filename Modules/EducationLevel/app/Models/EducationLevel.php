@@ -3,7 +3,7 @@
 namespace Modules\EducationLevel\Models;
 
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Core\Models\BaseModel;
 use Modules\School\Models\School;
 
@@ -55,8 +55,8 @@ class EducationLevel extends BaseModel
   }
 
   // Relations
-  public function schools(): BelongsToMany
+  public function schools(): HasMany
   {
-    return $this->belongsToMany(School::class);
+    return $this->hasMany(School::class);
   }
 }

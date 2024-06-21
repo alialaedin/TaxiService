@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Modules\Company\Models\Company;
-use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Core\Models\BaseModel;
 use Modules\School\Models\School;
 use Spatie\Activitylog\Traits\LogsActivity;

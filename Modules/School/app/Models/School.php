@@ -4,7 +4,6 @@ namespace Modules\School\Models;
 
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Modules\Area\Models\City;
 use Modules\Core\Models\BaseModel;
 use Modules\EducationLevel\Models\EducationLevel;
@@ -85,13 +84,13 @@ class School extends BaseModel
     return $this->belongsTo(SchoolType::class);
   }
 
-  public function educationLevels(): BelongsToMany
+  public function educationLevel(): BelongsTo
   {
-    return $this->belongsToMany(EducationLevel::class);
+    return $this->belongsTo(EducationLevel::class);
   }
 
   public function city(): BelongsTo
   {
-    return $this->belongsTo(City::class);
+    return $this->belongsTo(City::class, 'city_id');
   }
 }

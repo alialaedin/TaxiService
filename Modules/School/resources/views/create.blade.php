@@ -13,6 +13,8 @@
       <li class="breadcrumb-item active">ثبت مدرسه جدید</li>
     </ol>
   </div>
+
+
   <div class="card">
     <div class="card-header">
       <p class="card-title">ثبت مدرسه جدید</p>
@@ -66,7 +68,7 @@
             <div class="form-group">
               <label for="education_level_id" class="control-label">مقطع تحصیلی :<span
                   class="text-danger">&starf;</span></label>
-              <select name="education_level_id" id="education_level_id" class="form-control select2" multiple   >
+              <select name="education_level_id" id="education_level_id" class="form-control">
                 <option value="" class="text-muted">مقطع تحصیلی را انتخاب کنید</option>
                 @foreach($educationLevels as $educationLevel)
                   <option
@@ -153,10 +155,19 @@
             </div>
           </div>
 
+          <div class="col-lg-4 col-md-6 col-12">
+            <div class="form-group">
+              <label for="map" class="control-label"> موقعیت مکانی در نقشه: <span class="text-danger">&starf;</span></label>
+              <input type="text" id="map" class="form-control" name="map"
+                     placeholder="موقعیت مکانی را وارد کنید" value="{{ old('map') }}">
+              <x-core::show-validation-error name="map"/>
+            </div>
+          </div>
+
           <div class="col-12">
             <div class="form-group">
               <label for="address" class="control-label">آدرس:<span class="text-danger">&starf;</span></label>
-              <textarea name="address" id="address" class="form-control" rows="3" placeholder="محل سکونت را وارد کنید"
+              <textarea name="address" id="address" class="form-control" rows="3" placeholder="آدرس را وارد کنید"
                         required>{{ old('address') }}</textarea>
               <x-core::show-validation-error name="address"/>
             </div>

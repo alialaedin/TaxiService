@@ -25,7 +25,8 @@
                 <th class="text-center">عنوان مدرسه</th>
                 <th class="text-center">شیفت</th>
                 <th class="text-center">نوع مدرسه</th>
-                <th class="text-center">شهر</th>
+                <th class="text-center">مقطع تحصیلی</th>
+{{--                <th class="text-center">شهر</th>--}}
                 <th class="text-center">ترافیکی</th>
                 <th class="text-center">وضعیت</th>
                 <th class="text-center">تاریخ ثبت</th>
@@ -39,7 +40,8 @@
                   <td class="text-center">{{ $school->title }}</td>
                   <td class="text-center">{{ $school->shift->title }}</td>
                   <td class="text-center">{{ $school->schoolType->title }}</td>
-                  <td class="text-center">{{ $school->city->name }}</td>
+                  <td class="text-center">{{ $school->educationLevel->title.' '.'('.$school->educationLevel->getGender().')' }}</td>
+{{--                  <td class="text-center">{{ $school->city->name }}</td>--}}
                   <td class="text-center">
                     <x-core::badge
                       type="{{ $school->getTrafficBadgeType() }}"
@@ -60,7 +62,7 @@
                   </td>
                 </tr>
               @empty
-                <x-core::data-not-found-alert :colspan="9"/>
+                <x-core::data-not-found-alert :colspan="10"/>
               @endforelse
               </tbody>
             </table>

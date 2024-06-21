@@ -11,26 +11,26 @@
           </a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{{ route('admin.companies.index') }}">لیست شرکت ها</a>
+          <a href="{{ route('admin.schools.index') }}">لیست مدرسه ها</a>
         </li>
-        <li class="breadcrumb-item active">نمایش شرکت</li>
+        <li class="breadcrumb-item active">نمایش مدرسه</li>
       </ol>
 
       <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="{{ route('admin.companies.edit', $company) }}" class="btn btn-warning mx-1">
-          ویرایش شرکت
+        <a href="{{ route('admin.schools.edit', $school) }}" class="btn btn-warning mx-1">
+          ویرایش مدرسه
           <i class="fa fa-pencil mr-1"></i>
         </a>
         <button
-          onclick="confirmDelete('delete-{{ $company->id }}')"
+          onclick="confirmDelete('delete-{{ $school->id }}')"
           class="btn btn-danger mx-1">
-          حذف شرکت
+          حذف مدرسه
           <i class="fa fa-trash-o mr-1"></i>
         </button>
         <form
-          action="{{ route('admin.companies.destroy', $company) }}"
+          action="{{ route('admin.schools.destroy', $school) }}"
           method="POST"
-          id="delete-{{ $company->id }}"
+          id="delete-{{ $school->id }}"
           style="display: none">
           @csrf
           @method('DELETE')
@@ -41,53 +41,45 @@
 
     <div class="card overflow-hidden">
       <div class="card-header border-0">
-        <p class="card-title">اطلاعات شرکت</p>
+        <p class="card-title">اطلاعات مدرسه</p>
         <x-core::card-options/>
       </div>
       <div class="card-body">
         <div class="row">
           <div class="col-lg-6 col-12">
             <ul class="list-group">
-              <li class="list-group-item"><strong>کد : </strong> {{ $company->id }} </li>
-              <li class="list-group-item"><strong>عنوان شرکت : </strong> {{ $company->title }} </li>
-              <li class="list-group-item"><strong>نام و نام خانوادگی : </strong> {{ $company->name }} </li>
-              <li class="list-group-item"><strong>نام کاربری : </strong> {{ $company->username }} </li>
-              <li class="list-group-item"><strong>شماره موبایل : </strong> {{ $company->mobile }} </li>
-              <li class="list-group-item"><strong>شماره تلفن : </strong> {{ $company->telephone }} </li>
-              <li class="list-group-item"><strong>آدرس : </strong> {{ $company->address }} </li>
+              <li class="list-group-item"><strong>کد : </strong> {{ $school->id }} </li>
+              <li class="list-group-item"><strong>نام مدرسه : </strong> {{ $school->title }} </li>
+              <li class="list-group-item"><strong>شماره تلفن مدرسه : </strong> {{ $school->telephone }} </li>
+              <li class="list-group-item"><strong>نام و نام خانوادگی مدیر : </strong> {{ $school->manager_name }} </li>
+              <li class="list-group-item"><strong>شماره موبایل مدیر : </strong> {{ $school->manager_mobile }} </li>
               <li class="list-group-item">
-                <strong>لوگو : </strong>
-                <figure class="figure mb-0">
-                  <a target="_blank" href="{{ Storage::url($company->logo) }}">
-                    <img src="{{ Storage::url($company->logo) }}" class="img-thumbnail" alt="{{ $company->title }}"
-                         width="50" style="max-height: 35.5px;"/>
-                  </a>
-                </figure>
+                <strong>وضعیت : </strong>
+                <span @class([
+                  'text-success' => $school->status,
+                  'text-danger' => !$school->status])
+                > {{ $school->getStatus() }}
+                </span>
               </li>
+              <li class="list-group-item"><strong>آدرس : </strong> {{ $school->address }} </li>
             </ul>
           </div>
           <div class="col-lg-6 col-12">
             <ul class="list-group">
-              <li class="list-group-item"><strong>استان : </strong> {{ $company->city->province->name }} </li>
-              <li class="list-group-item"><strong>شهر : </strong> {{ $company->city->name }} </li>
-              <li class="list-group-item"><strong>شماره حساب : </strong> {{ $company->account_number }} </li>
-              <li class="list-group-item"><strong>شماره کارت : </strong> {{ $company->card_number }} </li>
-              <li class="list-group-item"><strong>شماره شبا : </strong> {{ $company->sheba_number }} </li>
+              <li class="list-group-item"><strong>استان : </strong> {{ $school->city->province->name }} </li>
+              <li class="list-group-item"><strong>شهر : </strong> {{ $school->city->name }} </li>
+              <li class="list-group-item"><strong>نوع مدرسه : </strong> {{ $school->schoolType->title }} </li>
+              <li class="list-group-item"><strong>شیفت کاری : </strong> {{ $school->shift->title }} </li>
+              <li class="list-group-item"><strong>مقطع تحصیلی : </strong> {{ $school->educationLevel->title.' '.'('.$school->educationLevel->getGender().')' }} </li>
               <li class="list-group-item">
-                <strong>وضعیت : </strong>
+                <strong>ترافیکی : </strong>
                 <span @class([
-                  'text-success' => $company->status,
-                  'text-danger' => !$company->status])
-                > {{ $company->getStatus() }}
+                  'text-success' => $school->is_traffic,
+                  'text-danger' => !$school->is_traffic])
+                > {{ $school->getTrafficTitle() }}
                 </span>
               </li>
-              <li class="list-group-item"><strong>تاریخ ثبت : </strong> @jalaliDate($company->created_at)</li>
-              <li class="list-group-item">
-                <strong>فایل رزومه : </strong>
-                <a href="{{ Storage::url($company->resume) }}" class="btn btn-sm btn-icon btn-outline-success text-center" download>
-                  <i class="fe fe-download ml-1"></i>دانلود فایل
-                </a>
-              </li>
+              <li class="list-group-item"><strong>تاریخ ثبت : </strong> @jalaliDate($school->created_at)</li>
             </ul>
           </div>
         </div>

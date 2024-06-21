@@ -22,8 +22,10 @@ class SchoolStoreRequest extends FormRequest
       'city_id' => ['required', 'integer', Rule::exists('cities', 'id')],
       'education_level_id' => ['required', 'integer', Rule::exists('education_levels', 'id')],
       'shift_id' => ['required', 'integer', Rule::exists('shifts', 'id')],
-      'school_type_Id' => ['required', 'integer', Rule::exists('school_types', 'id')],
+      'school_type_id' => ['required', 'integer', Rule::exists('school_types', 'id')],
       'status' => ['required', Rule::in(0, 1)],
+      'is_traffic' => ['required', Rule::in(0, 1)],
+      'map' => ['required', 'min:3'],
       'address' => ['required']
     ];
   }
