@@ -2,11 +2,9 @@
     "Core": true,
     "Admin": true,
     "Auth": true,
-    "Shift": true,
-    "SchoolType": true,
-    "EducationLevel": true,
     "Area": true,
     "Company": true,
     "School": true,
-    "Setting": true
+    "Setting": true,
+    "Driver": true
 }

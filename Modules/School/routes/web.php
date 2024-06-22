@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\School\Http\Controllers\Admin\EducationLevelController;
 use Modules\School\Http\Controllers\Admin\SchoolController;
+use Modules\School\Http\Controllers\Admin\SchoolTypeController;
+use Modules\School\Http\Controllers\Admin\ShiftController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +19,7 @@ use Modules\School\Http\Controllers\Admin\SchoolController;
 
 Route::middleware('auth:admin-web')->prefix('/admin')->name('admin.')->group(function() {
   Route::resource('/schools', SchoolController::class);
+  Route::resource('/education-levels', EducationLevelController::class);
+  Route::resource('/school-types', SchoolTypeController::class);
+  Route::resource('/shifts', ShiftController::class);
 });

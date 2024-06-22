@@ -3,10 +3,10 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Modules\EducationLevel\Models\EducationLevel;
-use Modules\Shift\Models\Shift;
-use Modules\SchoolType\Models\SchoolType;
 use Modules\Area\Models\City;
+use Modules\School\Models\EducationLevel;
+use Modules\School\Models\SchoolType;
+use Modules\School\Models\Shift;
 
 return new class extends Migration {
   /**
@@ -25,7 +25,8 @@ return new class extends Migration {
       $table->foreignIdFor(SchoolType::class)->constrained()->cascadeOnDelete();
       $table->boolean('status');
       $table->text('address');
-      $table->text('map');
+      $table->string('latitude');
+      $table->string('longitude');
       $table->boolean('is_traffic');
       $table->foreignIdFor(City::class)->constrained()->cascadeOnDelete();
       $table->timestamps();

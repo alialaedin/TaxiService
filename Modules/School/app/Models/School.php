@@ -6,9 +6,6 @@ namespace Modules\School\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Area\Models\City;
 use Modules\Core\Models\BaseModel;
-use Modules\EducationLevel\Models\EducationLevel;
-use Modules\SchoolType\Models\SchoolType;
-use Modules\Shift\Models\Shift;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -27,7 +24,8 @@ class School extends BaseModel
     'manager_mobile',
     'status',
     'address',
-    'map',
+    'latitude',
+    'longitude',
     'is_traffic'
   ];
 
@@ -47,9 +45,9 @@ class School extends BaseModel
 
   protected static function booted(): void
   {
-    static::created(fn() => flash()->success('مدرسه جدید با موفقیت ساخته شد.'));
-    static::updated(fn() => flash()->success('مدرسه با موفقیت بروزرسانی شد.'));
-    static::deleted(fn() => flash()->success('مدرسه با موفقیت حذف شد.'));
+    static::created(fn () => toastr()->success('مدرسه جدید با موفقیت ساخته شد.'));
+    static::updated(fn () => toastr()->success('مدرسه با موفقیت بروزرسانی شد.'));
+    static::deleted(fn () => toastr()->success('مدرسه با موفقیت حذف شد.'));
   }
 
   // Functions

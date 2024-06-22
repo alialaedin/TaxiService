@@ -9,9 +9,9 @@ return [
   ],
 
   'events' => [
-    'created' => 'ایجاد کرد',
-    'updated' => 'ویرایش کرد',
-    'deleted' => 'حذف کرد'
+    'created' => 'ایجاد شد',
+    'updated' => 'ویرایش شد',
+    'deleted' => 'حذف شد'
   ],
 
   'payment_types' => [

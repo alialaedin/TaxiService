@@ -12,11 +12,10 @@ return new class extends Migration {
   {
     Schema::create('settings', function (Blueprint $table) {
       $table->id();
+      $table->string('group');
       $table->string('label');
-      $table->string('group_label');
       $table->string('name')->unique();
       $table->string('type')->default('text');
-      $table->enum('unit_type', ['number', 'percent'])->nullable();
       $table->string('value')->nullable();
       $table->timestamps();
     });

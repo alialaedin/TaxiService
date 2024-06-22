@@ -2,17 +2,19 @@
 
 namespace Modules\Company\Models;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 use Modules\Area\Models\City;
+use Modules\Core\Models\BaseModelTrait;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Company extends Authenticatable
 {
-  use LogsActivity;
+  use LogsActivity, BaseModelTrait;
 
   protected $fillable = [
     'title',
@@ -47,10 +49,21 @@ class Company extends Authenticatable
 
   protected static function booted(): void
   {
-    static::created(fn() => flash()->success('شرکت جدید با موفقیت ساخته شد.'));
-    static::updated(fn() => flash()->success('شرکت با موفقیت بروزرسانی شد.'));
-    static::deleting(fn(Company $company) => $company->deleteFiles());
-    static::deleted(fn() => flash()->success('شرکت با موفقیت حذف شد.'));
+    static::created(function() {
+      flash()->success('شرکت جدید با موفقیت ساخته شد.');
+    });
+
+    static::updated(function() {
+      flash()->success('شرکت با موفقیت بروزرسانی شد.');
+    });
+
+    static::deleted(function() {
+      flash()->success('شرکت جدید با موفقیت حذف شد.');
+    });
+
+    static::deleting(function(Company $company) {
+      $company->deleteFiles();
+    });
   }
 
   // Functions
@@ -85,6 +98,14 @@ class Company extends Authenticatable
   {
     Storage::delete($this->attributes['logo']);
     Storage::delete($this->attributes['resume']);
+  }
+
+  public static function getActiveCompanies(): Collection
+  {
+    return Company::query()
+      ->active()
+      ->select('id', 'title')
+      ->get();
   }
 
   // Relations

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Modules\Company\Models\Company;
+use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Core\Models\BaseModel;
 use Modules\School\Models\School;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -25,7 +26,7 @@ class City extends BaseModel
       ->setDescriptionForEvent(fn (string $eventName) => 'شهر ' . __('logs.events' . $eventName));
   }
 
-  public static function clearAllCaches(): void
+  public function clearAllCaches(): void
   {
     if (Cache::has('all_cities')) {
       Cache::forget('all_cities');
@@ -43,6 +44,11 @@ class City extends BaseModel
   {
     static::saved(fn(City $city) => $city->clearAllCaches());
     static::deleted(fn(City $city) => $city->clearAllCaches());
+    static::deleting(function(City $city) {
+      if (!$city->isDeletable()) {
+        throw new ModelCannotBeDeletedException('این شهر قابل حذف نمی باشد!');
+      }
+    });
   }
 
   public static function getAllCities(): Collection
@@ -54,8 +60,13 @@ class City extends BaseModel
     });
   }
 
+  public function isDeletable(): bool
+  {
+    return $this->companies->isEmpty() && $this->schools->isEmpty();
+  }
+
   // Relation
-  public function company(): HasMany
+  public function companies(): HasMany
   {
     return $this->hasMany(Company::class);
   }

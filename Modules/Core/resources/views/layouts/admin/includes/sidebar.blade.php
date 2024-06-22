@@ -12,7 +12,7 @@
 
       <li class="slide">
         <a class="side-menu__item" href="{{route("admin.dashboard")}}">
-          <i class="feather feather-home sidemenu_icon"></i>
+          <i class="fa fa-home sidemenu_icon"></i>
           <span class="side-menu__label">داشبورد</span>
         </a>
       </li>
@@ -21,7 +21,7 @@
 
         <li class="slide">
           <a class="side-menu__item" data-toggle="slide" href="#">
-            <i class="fe fe-edit sidemenu_icon"></i>
+            <i class="fa fa-edit sidemenu_icon"></i>
             <span class="side-menu__label">اطلاعات پایه</span><i class="angle fa fa-angle-left"></i>
           </a>
           <ul class="slide-menu">
@@ -37,15 +37,22 @@
 
         <li class="slide">
           <a class="side-menu__item" href="{{route("admin.companies.index")}}">
-            <i class="feather feather-home sidemenu_icon"></i>
+            <i class="fa fa-building-o sidemenu_icon mr-1"></i>
             <span class="side-menu__label">شرکت ها</span>
           </a>
         </li>
 
         <li class="slide">
           <a class="side-menu__item" href="{{route("admin.schools.index")}}">
-            <i class="feather feather-home sidemenu_icon"></i>
-            <span class="side-menu__label">مدرسه ها</span>
+            <i class="fa fa-graduation-cap sidemenu_icon"></i>
+            <span class="side-menu__label">مدارس</span>
+          </a>
+        </li>
+
+        <li class="slide">
+          <a class="side-menu__item" href="{{route("admin.drivers.index")}}">
+            <i class="fa fa-car sidemenu_icon"></i>
+            <span class="side-menu__label">راننده ها</span>
           </a>
         </li>
 

@@ -8,14 +8,29 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
+use Modules\Setting\Http\Requests\Admin\SettingUpdateRequest;
 use Modules\Setting\Models\Setting;
 
 class SettingController extends Controller
 {
   public function edit(): View
   {
-    $groups = Cache::rememberForever('settings', fn() => Setting::all()->groupBy('group_label'));
+    $groups = Setting::all()->groupBy('group');
 
-    return view('setting::index', compact('groups'));
+    return view('setting::edit', compact('groups'));
   }
+
+  public function update(SettingUpdateRequest $request): \Illuminate\Http\RedirectResponse
+  {
+    $inputs = $request->except(['_token', '_method']);
+
+    foreach ($inputs as $name => $value) {
+      if ($setting = Setting::query()->where('name', $name)->first()) {
+        $setting->update(['value' => $value]);
+      }
+    }
+
+    return redirect()->back();
+  }
+
 }

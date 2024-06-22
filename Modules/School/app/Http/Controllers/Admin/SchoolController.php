@@ -6,14 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
-use Modules\Area\Models\City;
 use Modules\Area\Models\Province;
-use Modules\EducationLevel\Models\EducationLevel;
-use Modules\School\Http\Requests\Admin\SchoolStoreRequest;
-use Modules\School\Http\Requests\Admin\SchoolUpdateRequest;
+use Modules\School\Models\EducationLevel;
+use Modules\School\Http\Requests\Admin\School\SchoolStoreRequest;
+use Modules\School\Http\Requests\Admin\School\SchoolUpdateRequest;
 use Modules\School\Models\School;
-use Modules\SchoolType\Models\SchoolType;
-use Modules\Shift\Models\Shift;
+use Modules\School\Models\SchoolType;
+use Modules\School\Models\Shift;
 
 class SchoolController extends Controller
 {
@@ -42,7 +41,7 @@ class SchoolController extends Controller
 
     $totalSchools = $schools->total();
 
-    return view('school::index', compact(['schools', 'totalSchools']));
+    return view('school::school.index', compact(['schools', 'totalSchools']));
   }
 
   public function show(School $school): View
@@ -55,17 +54,17 @@ class SchoolController extends Controller
       'city.province:id,name'
     ]);
 
-    return view('school::show', compact('school'));
+    return view('school::school.show', compact('school'));
   }
 
   public function create(): View
   {
     $provinces = Province::getAllProvincesWithCities();
-    $educationLevels = EducationLevel::getAllEducationLevels();
+    $educationLevels = EducationLevel::getActiveEducationLevels();
     $shifts = Shift::getAllShifts();
     $schoolTypes = SchoolType::getAllSchoolTypes();
 
-    return view('school::create', compact(['provinces', 'educationLevels', 'shifts', 'schoolTypes']));
+    return view('school::school.create', compact(['provinces', 'educationLevels', 'shifts', 'schoolTypes']));
   }
 
   public function store(SchoolStoreRequest $request): RedirectResponse
@@ -78,11 +77,11 @@ class SchoolController extends Controller
   public function edit(School $school): View
   {
     $provinces = Province::getAllProvincesWithCities();
-    $educationLevels = EducationLevel::getAllEducationLevels();
+    $educationLevels = EducationLevel::getActiveEducationLevels();
     $shifts = Shift::getAllShifts();
     $schoolTypes = SchoolType::getAllSchoolTypes();
 
-    return view('school::edit', compact(['school', 'provinces', 'educationLevels', 'shifts', 'schoolTypes']));
+    return view('school::school.edit', compact(['school', 'provinces', 'educationLevels', 'shifts', 'schoolTypes']));
   }
 
   public function update(SchoolUpdateRequest $request, School $school): RedirectResponse

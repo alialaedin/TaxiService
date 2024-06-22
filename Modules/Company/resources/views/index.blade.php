@@ -38,7 +38,7 @@
                   <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                   <td class="text-center">{{ $company->title }}</td>
                   <td class="text-center">
-                    <figure class="figure my-2">
+                    <figure class="figure m-0">
                       <a target="_blank" href="{{ Storage::url($company->logo) }}">
                         <img src="{{ Storage::url($company->logo) }}" class="img-thumbnail" alt="{{ $company->title }}"
                              width="50" style="max-height: 32px;"/>
