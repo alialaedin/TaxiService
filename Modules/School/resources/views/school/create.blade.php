@@ -135,22 +135,26 @@
 
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
-              <label for="city_id" class="control-label">شهر و استان :<span class="text-danger">&starf;</span></label>
-              <select name="city_id" id="city_id" class="form-control">
-                <option value="" class="text-muted">شهر را انتخاب کنید</option>
+              <label for="province_id" class="control-label">استان :<span class="text-danger">&starf;</span></label>
+              <select name="province_id" id="province_id" class="form-control" onchange="loadCitiesByProvinceId()">
+                <option value="" class="text-muted">استان را انتخاب کنید</option>
                 @foreach($provinces as $province)
-                  <optgroup label="{{ $province->name }}" class="text-muted">
-                    @foreach ($province->cities as $city)
-                      <option
-                        value="{{ $city->id }}"
-                        class="text-dark"
-                        @selected(old('city_id') == $city->id)>
-                        {{ $city->name }}
-                      </option>
-                    @endforeach
-                  </optgroup>
+                  <option
+                    value="{{ $province->id }}"
+                    class="text-dark"
+                    @selected(old('province_id') == $province->id)>
+                    {{ $province->name }}
+                  </option>
                 @endforeach
               </select>
+              <x-core::show-validation-error name="province_id"/>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 col-12">
+            <div class="form-group">
+              <label for="city_id" class="control-label">شهر :<span class="text-danger">&starf;</span></label>
+              <select name="city_id" id="city_id" class="form-control"></select>
               <x-core::show-validation-error name="city_id"/>
             </div>
           </div>
@@ -188,4 +192,22 @@
       </form>
     </div>
   </div>
+@endsection
+@section('scripts')
+  <script>
+    function loadCitiesByProvinceId() {
+      let provinceId = $('#province_id').val();
+
+      let token = $('meta[name="csrf-token"]').attr('content');
+      $.ajax({
+        url: '{{ route("admin.get-cities-by-province-id") }}',
+        type: 'POST',
+        data: {province_id: provinceId},
+        headers: {'X-CSRF-TOKEN': token},
+        success: function (response) {
+          $('#city_id').html(response);
+        }
+      });
+    }
+  </script>
 @endsection

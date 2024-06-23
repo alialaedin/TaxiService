@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
+use Modules\Area\Models\City;
 use Modules\Area\Models\Province;
 use Modules\School\Models\EducationLevel;
 use Modules\School\Http\Requests\Admin\School\SchoolStoreRequest;
@@ -19,13 +20,21 @@ class SchoolController extends Controller
   public function index(): View
   {
     $shiftId = request('shift_id');
+    $cityId = request('city_id');
+    $educationLevelId = request('education_level_id');
+    $schoolTypeId = request('school_type_id');
+    $telephone = request('telephone');
     $title= request('title');
     $status = request('status');
     $isTraffic = request('is_traffic');
 
     $schools = School::query()
-      ->select(['id', 'shift_id', 'education_level_id', 'school_type_id', 'title', 'telephone', 'status', 'is_traffic'])
+      ->select(['id', 'shift_id', 'education_level_id', 'school_type_id', 'city_id', 'title', 'telephone', 'status', 'is_traffic'])
       ->when($shiftId, fn(Builder $query) => $query->where('shift_id', '=', $shiftId))
+      ->when($cityId, fn(Builder $query) => $query->where('city_id', '=', $cityId))
+      ->when($educationLevelId, fn(Builder $query) => $query->where('education_level_id', '=', $educationLevelId))
+      ->when($schoolTypeId, fn(Builder $query) => $query->where('school_type_id', '=', $schoolTypeId))
+      ->when($telephone, fn(Builder $query) => $query->where('telephone', '=', $telephone))
       ->when($title, fn(Builder $query) => $query->where('title', 'like', "%$title%"))
       ->when(isset($status), fn(Builder $query) => $query->where('status', '=', $status))
       ->when(isset($isTraffic), fn(Builder $query) => $query->where('is_traffic', '=', $isTraffic))
@@ -41,7 +50,17 @@ class SchoolController extends Controller
 
     $totalSchools = $schools->total();
 
-    return view('school::school.index', compact(['schools', 'totalSchools']));
+    $shifts = Shift::getAllShifts();
+    $schoolTypes = SchoolType::getAllSchoolTypes();
+    $educationLevels = EducationLevel::getActiveEducationLevels();
+
+    return view('school::school.index', compact([
+      'schools',
+      'totalSchools',
+      'shifts',
+      'schoolTypes',
+      'educationLevels',
+    ]));
   }
 
   public function show(School $school): View

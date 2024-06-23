@@ -3,6 +3,7 @@
 namespace Modules\Auth\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Modules\Auth\Http\Requests\Admin\LoginRequest;
@@ -10,7 +11,7 @@ use Modules\Auth\Http\Requests\Admin\LogoutRequest;
 
 class AuthController extends Controller
 {
-	public function showLoginForm()
+	public function showLoginForm(): View
 	{
 		return view("auth::admin.login");
 	}
@@ -19,7 +20,7 @@ class AuthController extends Controller
 	{
 		if (Auth::guard('admin-web')->attempt($request->except("_token"))) {
 			$request->session()->regenerate();
-			return redirect()->intended('admin/dashboard');
+			return redirect()->intended(route('admin.dashboard'));
 		}
 		return back()->withErrors([
 			'username' => 'چنین نام کاربری در پایگاه داده ثبت نشده است.',
@@ -30,6 +31,6 @@ class AuthController extends Controller
 	{
 		$request->session()->invalidate();
 		$request->session()->regenerateToken();
-		return redirect()->route("login.form");
+		return redirect()->route("admin.login.form");
 	}
 }

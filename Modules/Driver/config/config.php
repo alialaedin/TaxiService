@@ -6,6 +6,9 @@ $statusPending = Driver::STATUS_PENDING;
 $statusConfirmed = Driver::STATUS_CONFIRMED;
 $statusRejected = Driver::STATUS_REJECTED;
 
+$genderMale = Driver::GENDER_MALE;
+$genderFemale = Driver::GENDER_FEMALE;
+
 return [
   'name' => 'Driver',
 
@@ -19,5 +22,10 @@ return [
     $statusPending => 'warning',
     $statusConfirmed => 'success',
     $statusRejected => 'danger',
+  ],
+
+  'genders' => [
+    $genderMale => 'مرد',
+    $genderFemale => 'زن',
   ]
 ];

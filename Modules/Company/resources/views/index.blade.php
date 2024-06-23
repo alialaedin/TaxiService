@@ -9,6 +9,7 @@
     </ol>
     <x-core::register-button route="admin.companies.create" title="ثبت شرکت جدید"/>
   </div>
+  @include('company::filter-form')
   <div class="card">
     <div class="card-header border-0">
       <p class="card-title">لیست همه شرکت ها ({{ $totalCompanies }})</p>

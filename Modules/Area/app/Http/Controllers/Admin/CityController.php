@@ -3,65 +3,30 @@
 namespace Modules\Area\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Area\Models\City;
 
 class CityController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('area::index');
+  public function getCities(Request $request): JsonResponse
+  {
+    $provinceId = $request->input('province_id');
+    $modelCityId = $request->input('model_city_id') ?? 0;
+
+    $cities = City::query()->where('province_id', $provinceId)->get();
+
+    $options = '';
+    foreach ($cities as $city) {
+      if ($city->id == $modelCityId) {
+        $options .= '<option selected value="' . $city->id . '">' . $city->name . '</option>';
+      } else {
+        $options .= '<option value="' . $city->id . '">' . $city->name . '</option>';
+      }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('area::create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('area::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('area::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    return response()->json($options);
+  }
 }

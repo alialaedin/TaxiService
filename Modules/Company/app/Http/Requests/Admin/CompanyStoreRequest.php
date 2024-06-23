@@ -27,8 +27,8 @@ class CompanyStoreRequest extends FormRequest
       'sheba_number' => ['nullable', 'digits:22', 'numeric'],
       'account_number' => ['required', 'digits:18', 'numeric'],
       'logo' => ['required', 'image', 'mimes:png,jpg'],
-      'resume' => ['required', 'image', 'mimes:png,jpg,pdf'],
-      'address' => ['required']
+      'resume' => ['required', 'string', 'min:3'],
+      'address' => ['required', 'string', 'min:3'],
     ];
   }
 

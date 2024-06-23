@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Area\Http\Controllers\AreaController;
-
+use Modules\Area\Http\Controllers\Admin\CityController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,6 +13,6 @@ use Modules\Area\Http\Controllers\AreaController;
 |
 */
 
-Route::group([], function () {
-    Route::resource('area', AreaController::class)->names('area');
+Route::middleware('auth:admin-web')->prefix('/admin')->name('admin.')->group(function() {
+  Route::post('/get-cities-by-province-id', [CityController::class, 'getCities'])->name('get-cities-by-province-id');
 });

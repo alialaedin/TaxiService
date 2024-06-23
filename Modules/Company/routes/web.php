@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Company\Http\Controllers\Admin\CompanyController;
+use Modules\Company\Http\Controllers\Company\ProfileController as CompanyProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +16,9 @@ use Modules\Company\Http\Controllers\Admin\CompanyController;
 */
 Route::middleware('auth:admin-web')->prefix('/admin')->name('admin.')->group(function() {
   Route::resource('/companies', CompanyController::class);
+});
+
+Route::middleware('auth:company-web')->prefix('/company')->name('company.')->group(function() {
+  Route::get('/profile/edit', [CompanyProfileController::class, 'edit'])->name('profile.edit');
+  Route::patch('/profile', [CompanyProfileController::class, 'update'])->name('profile.update');
 });

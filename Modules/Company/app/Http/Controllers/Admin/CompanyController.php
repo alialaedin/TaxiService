@@ -67,9 +67,6 @@ class CompanyController extends Controller
     if ($request->hasFile('logo') && $request->file('logo')->isValid()) {
       $inputs['logo'] = $request->file('logo')->store('company/logos', 'public');
     }
-    if ($request->hasFile('resume') && $request->file('resume')->isValid()) {
-      $inputs['resume'] = $request->file('resume')->store('company/resumes', 'public');
-    }
 
     Company::query()->create($inputs);
 
@@ -94,10 +91,6 @@ class CompanyController extends Controller
       Storage::delete($company->logo);
       $inputs['logo'] = $request->file('logo')->store('company/logos', 'public');
     }
-    if ($request->hasFile('resume') && $request->file('resume')->isValid()) {
-      Storage::delete($company->resume);
-      $inputs['resume'] = $request->file('resume')->store('company/resumes', 'public');
-    }
 
     Company::query()->update($inputs);
 
@@ -106,10 +99,9 @@ class CompanyController extends Controller
 
   public function destroy(Company $company): RedirectResponse
   {
-    $company->deleteFiles();
+    $company->deleteFile();
     $company->delete();
 
     return to_route('admin.companies.index');
   }
-
 }

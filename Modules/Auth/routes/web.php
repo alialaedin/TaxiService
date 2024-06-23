@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Auth\Http\Controllers\Admin\AuthController;
+use Modules\Auth\Http\Controllers\Admin\AuthController as AdminAuthController;
+use Modules\Auth\Http\Controllers\Company\AuthController as CompanyAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,12 +16,26 @@ use Modules\Auth\Http\Controllers\Admin\AuthController;
 */
 
 Route::get('/', function () {
-	return view('auth::admin.login');
+  return view('auth::admin.login');
 });
 
-Route::middleware('guest')->group(function () {
-	Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
-	Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::prefix('/admin')->name('admin.')->group(function () {
+  Route::middleware('guest')->group(function () {
+    Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login.form');
+    Route::post('/login', [AdminAuthController::class, 'login'])->name('login');
+  });
+  Route::middleware('auth:admin-web')
+    ->post('/logout', [AdminAuthController::class, 'logout'])
+    ->name('logout');
 });
 
-Route::middleware('auth')->post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::prefix('/company')->name('company.')->group(function () {
+  Route::middleware('guest')->group(function () {
+    Route::get('/login', [CompanyAuthController::class, 'showLoginForm'])->name('login.form');
+    Route::post('/login', [CompanyAuthController::class, 'login'])->name('login');
+  });
+  Route::middleware('auth:company-web')
+    ->post('/logout', [CompanyAuthController::class, 'logout'])
+    ->name('logout');
+});
+

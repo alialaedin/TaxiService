@@ -9,6 +9,7 @@
     </ol>
     <x-core::register-button route="admin.schools.create" title="ثبت مدرسه جدید"/>
   </div>
+  @include('school::school.filter-form')
   <div class="card">
     <div class="card-header border-0">
       <p class="card-title">لیست همه مدرسه ها ({{ $totalSchools }})</p>
@@ -26,7 +27,7 @@
                 <th class="text-center">شیفت</th>
                 <th class="text-center">نوع مدرسه</th>
                 <th class="text-center">مقطع تحصیلی</th>
-{{--                <th class="text-center">شهر</th>--}}
+                <th class="text-center">شهر</th>
                 <th class="text-center">ترافیکی</th>
                 <th class="text-center">وضعیت</th>
                 <th class="text-center">تاریخ ثبت</th>
@@ -41,7 +42,7 @@
                   <td class="text-center">{{ $school->shift->title }}</td>
                   <td class="text-center">{{ $school->schoolType->title }}</td>
                   <td class="text-center">{{ $school->educationLevel->title.' '.'('.$school->educationLevel->getGender().')' }}</td>
-{{--                  <td class="text-center">{{ $school->city->name }}</td>--}}
+                  <td class="text-center">{{ $school->city->name }}</td>
                   <td class="text-center">
                     <x-core::badge
                       type="{{ $school->getTrafficBadgeType() }}"

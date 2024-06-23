@@ -4,15 +4,15 @@ namespace Modules\Company\Models;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 use Modules\Area\Models\City;
+use Modules\Core\Models\BaseAuthModel;
 use Modules\Core\Models\BaseModelTrait;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Company extends Authenticatable
+class Company extends BaseAuthModel
 {
   use LogsActivity, BaseModelTrait;
 
@@ -49,20 +49,11 @@ class Company extends Authenticatable
 
   protected static function booted(): void
   {
-    static::created(function() {
-      flash()->success('شرکت جدید با موفقیت ساخته شد.');
-    });
-
-    static::updated(function() {
-      flash()->success('شرکت با موفقیت بروزرسانی شد.');
-    });
-
-    static::deleted(function() {
-      flash()->success('شرکت جدید با موفقیت حذف شد.');
-    });
-
+    static::created(fn() => toastr()->success('شرکت جدید با موفقیت ساخته شد.'));
+    static::updated(fn() => toastr()->success('شرکت با موفقیت بروزرسانی شد.'));
+    static::deleted(fn() => toastr()->success('شرکت جدید با موفقیت حذف شد.'));
     static::deleting(function(Company $company) {
-      $company->deleteFiles();
+      $company->deleteFile();
     });
   }
 
@@ -91,13 +82,13 @@ class Company extends Authenticatable
       'card_number' => $request->input('card_number'),
       'sheba_number' => $request->input('sheba_number'),
       'address' => $request->input('address'),
+      'resume' => $request->input('resume'),
     ];
   }
 
-  public function deleteFiles(): void
+  public function deleteFile(): void
   {
     Storage::delete($this->attributes['logo']);
-    Storage::delete($this->attributes['resume']);
   }
 
   public static function getActiveCompanies(): Collection

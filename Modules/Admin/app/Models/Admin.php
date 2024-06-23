@@ -2,13 +2,12 @@
 
 namespace Modules\Admin\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Modules\Core\Exceptions\ModelCannotBeDeletedException;
+use Modules\Core\Models\BaseAuthModel;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
-class Admin extends Authenticatable
+class Admin extends BaseAuthModel
 {
   use HasRoles, LogsActivity;
 

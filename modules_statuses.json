@@ -6,5 +6,7 @@
     "Company": true,
     "School": true,
     "Setting": true,
-    "Driver": true
+    "Driver": true,
+    "Family": true,
+    "Sms": true
 }

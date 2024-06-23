@@ -24,6 +24,8 @@
         @method('PATCH')
         <div class="row">
 
+          <input type="hidden" id="model_city_id" value="{{ $company->city_id }}">
+
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="title" class="control-label"> عنوان شرکت: <span class="text-danger">&starf;</span></label>
@@ -63,22 +65,25 @@
 
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
-              <label for="city_id" class="control-label">شهر و استان :<span class="text-danger">&starf;</span></label>
-              <select name="city_id" id="city_id" class="form-control">
-                <option value="" class="text-muted">شهر را انتخاب کنید</option>
+              <label for="province_id" class="control-label">استان :<span class="text-danger">&starf;</span></label>
+              <select name="province_id" id="province_id" class="form-control" onchange="loadCitiesByProvinceId()">
                 @foreach($provinces as $province)
-                  <optgroup label="{{ $province->name }}" class="text-muted">
-                    @foreach ($province->cities as $city)
-                      <option
-                        value="{{ $city->id }}"
-                        class="text-dark"
-                        @selected(old('city_id', $company->city_id) == $city->id)>
-                        {{ $city->name }}
-                      </option>
-                    @endforeach
-                  </optgroup>
+                  <option
+                    value="{{ $province->id }}"
+                    class="text-dark"
+                    @selected(old('province_id', $company->city->province->id) == $province->id)>
+                    {{ $province->name }}
+                  </option>
                 @endforeach
               </select>
+              <x-core::show-validation-error name="province_id"/>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 col-12">
+            <div class="form-group">
+              <label for="city_id" class="control-label">شهر :<span class="text-danger">&starf;</span></label>
+              <select name="city_id" id="city_id" class="form-control"></select>
               <x-core::show-validation-error name="city_id"/>
             </div>
           </div>
@@ -163,18 +168,20 @@
 
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
-              <label for="resume" class="control-label">رزومه :</label>
-              <input type="file" id="resume" class="form-control" name="resume" value="{{ old('resume') }}">
-              <x-core::show-validation-error name="resume"/>
+              <label for="address" class="control-label">آدرس :<span
+                  class="text-danger">&starf;</span></label>
+              <input type="text" id="address" class="form-control" name="address"
+                     placeholder="آدرس را وارد کنید" value="{{ old('address', $company->address) }}">
+              <x-core::show-validation-error name="address"/>
             </div>
           </div>
 
           <div class="col-12">
             <div class="form-group">
-              <label for="address" class="control-label">آدرس:<span class="text-danger">&starf;</span></label>
-              <textarea name="address" id="address" class="form-control" rows="3" placeholder="محل سکونت را وارد کنید"
-                        required>{{ old('address', $company->address) }}</textarea>
-              <x-core::show-validation-error name="address"/>
+              <label for="resume" class="control-label">رزومه:<span class="text-danger">&starf;</span></label>
+              <textarea name="resume" id="resume" class="form-control" rows="7" placeholder="رزومه را وارد کنید"
+                        required>{{ old('resume', $company->resume) }}</textarea>
+              <x-core::show-validation-error name="resume"/>
             </div>
           </div>
 
@@ -185,4 +192,26 @@
       </form>
     </div>
   </div>
+@endsection
+@section('scripts')
+  <script>
+    function loadCitiesByProvinceId() {
+      let provinceId = $('#province_id').val();
+      let modelCityId = $('#model_city_id').val();
+
+      let token = $('meta[name="csrf-token"]').attr('content');
+      $.ajax({
+        url: '{{ route("admin.get-cities-by-province-id") }}',
+        type: 'POST',
+        data: {
+          province_id: provinceId,
+          model_city_id: modelCityId
+        },
+        headers: {'X-CSRF-TOKEN': token},
+        success: function (response) {
+          $('#city_id').html(response);
+        }
+      });
+    }
+  </script>
 @endsection

@@ -42,14 +42,14 @@
 								<div class="col-md-7 col-lg-5">
 									<div class="card">
 										<div class="p-4 pt-6 text-center">
-											<h1 class="mb-2">ورود به پنل</h1>
+											<p class="mb-2 fs-24">ورود به پنل</p>
                       @if ($errors->any())
                         <div class="alert alert-danger ">
                           <span>اطلاعات وارد شده صحیح نمیباشد.</span>
                         </div>
                       @endif
 										</div>
-										<form class="card-body pt-3" id="login" action="{{route("login")}}" name="login" method="POST">
+										<form class="card-body pt-3" id="login" action="{{route("admin.login")}}" name="login" method="POST">
                       @csrf
 											<div class="form-group">
 												<label class="form-label">نام کاربری :</label>
@@ -76,16 +76,16 @@
 		</div>
 
 		<!-- Jquery js-->
-		<script src="assets/plugins/jquery/jquery.min.js"></script>
+		<script src="{{asset('assets/plugins/jquery/jquery.min.js')}}"></script>
 		<!-- Bootstrap4 js-->
-		<script src="assets/plugins/bootstrap/popper.min.js"></script>
-		<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+		<script src="{{asset('assets/plugins/bootstrap/popper.min.js')}}"></script>
+		<script src="{{asset('assets/plugins/bootstrap/js/bootstrap.min.js')}}"></script>
 		<!-- Select2 js -->
-		<script src="assets/plugins/select2/select2.full.min.js"></script>
+		<script src="{{asset('assets/plugins/select2/select2.full.min.js')}}"></script>
 		<!-- P-scroll js-->
-		<script src="assets/plugins/p-scrollbar/p-scrollbar.js"></script>
+		<script src="{{asset('assets/plugins/p-scrollbar/p-scrollbar.js')}}"></script>
 		<!-- Custom js-->
-		<script src="assets/js/custom.js"></script>
+		<script src="{{asset('assets/js/custom.js')}}"></script>
 
 	</body>
 </html>

@@ -31,4 +31,15 @@ return [
         ],
     ],
 
+  'sms' => [
+    'driver' => 'kavenegar',
+    'sender' => env('KAVEHNEGAR_SENDER'),
+    'api_key' => env('KAVEHNEGAR_API_KEY'),
+    'patterns' => [
+      'verification_code' => 'verify',
+      'change_password' => 'password'
+    ]
+  ]
+
+
 ];

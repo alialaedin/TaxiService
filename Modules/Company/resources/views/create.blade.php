@@ -61,22 +61,26 @@
 
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
-              <label for="city_id" class="control-label">شهر و استان :<span class="text-danger">&starf;</span></label>
-              <select name="city_id" id="city_id" class="form-control">
-                <option value="" class="text-muted">شهر را انتخاب کنید</option>
+              <label for="province_id" class="control-label">استان :<span class="text-danger">&starf;</span></label>
+              <select name="province_id" id="province_id" class="form-control" onchange="loadCitiesByProvinceId()">
+                <option value="" class="text-muted">استان را انتخاب کنید</option>
                 @foreach($provinces as $province)
-                  <optgroup label="{{ $province->name }}" class="text-muted">
-                    @foreach ($province->cities as $city)
-                      <option
-                        value="{{ $city->id }}"
-                        class="text-dark"
-                        @selected(old('city_id') == $city->id)>
-                        {{ $city->name }}
-                      </option>
-                    @endforeach
-                  </optgroup>
+                  <option
+                    value="{{ $province->id }}"
+                    class="text-dark"
+                    @selected(old('province_id') == $province->id)>
+                    {{ $province->name }}
+                  </option>
                 @endforeach
               </select>
+              <x-core::show-validation-error name="province_id"/>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 col-12">
+            <div class="form-group">
+              <label for="city_id" class="control-label">شهر :<span class="text-danger">&starf;</span></label>
+              <select name="city_id" id="city_id" class="form-control"></select>
               <x-core::show-validation-error name="city_id"/>
             </div>
           </div>
@@ -97,7 +101,8 @@
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="username" class="control-label">نام کاربری :<span class="text-danger">&starf;</span></label>
-              <input type="text" id="username" class="form-control" name="username" placeholder="نام کاربری را وارد کنید" value="{{ old('username') }}">
+              <input type="text" id="username" class="form-control" name="username"
+                     placeholder="نام کاربری را وارد کنید" value="{{ old('username') }}">
               <x-core::show-validation-error name="username"/>
             </div>
           </div>
@@ -105,39 +110,47 @@
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="password" class="control-label"> کلمه عبور: <span class="text-danger">&starf;</span></label>
-              <input type="password" id="password" class="form-control" name="password" placeholder="کلمه عبور را وارد کنید" required>
-              <x-core::show-validation-error name="password" />
+              <input type="password" id="password" class="form-control" name="password"
+                     placeholder="کلمه عبور را وارد کنید" required>
+              <x-core::show-validation-error name="password"/>
             </div>
           </div>
 
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="password_confirmation" class="control-label"> تکرار کلمه عبور: <span class="text-danger">&starf;</span></label>
-              <input type="password" id="password_confirmation" class="form-control" name="password_confirmation" placeholder="تکرار کلمه عبور را وارد کنید" required>
-              <x-core::show-validation-error name="password_confirmation" />
+              <input type="password" id="password_confirmation" class="form-control" name="password_confirmation"
+                     placeholder="تکرار کلمه عبور را وارد کنید" required>
+              <x-core::show-validation-error name="password_confirmation"/>
             </div>
           </div>
 
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
-              <label for="account_number" class="control-label">شماره حساب :<span class="text-danger">&starf;</span></label>
-              <input type="text" id="account_number" class="form-control" name="account_number" placeholder="شماره حساب را وارد کنید" value="{{ old('account_number') }}">
+              <label for="account_number" class="control-label">شماره حساب :<span
+                  class="text-danger">&starf;</span></label>
+              <input type="text" id="account_number" class="form-control" name="account_number"
+                     placeholder="شماره حساب را وارد کنید" value="{{ old('account_number') }}">
               <x-core::show-validation-error name="account_number"/>
             </div>
           </div>
 
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
-              <label for="card_number" class="control-label">شماره کارت :<span class="text-danger">&starf;</span></label>
-              <input type="text" id="card_number" class="form-control" name="card_number" placeholder="شماره کارت را وارد کنید" value="{{ old('card_number') }}">
+              <label for="card_number" class="control-label">شماره کارت :<span
+                  class="text-danger">&starf;</span></label>
+              <input type="text" id="card_number" class="form-control" name="card_number"
+                     placeholder="شماره کارت را وارد کنید" value="{{ old('card_number') }}">
               <x-core::show-validation-error name="card_number"/>
             </div>
           </div>
 
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
-              <label for="sheba_number" class="control-label">شماره شبا :<span class="text-danger">&starf;</span></label>
-              <input type="text" id="sheba_number" class="form-control" name="sheba_number" placeholder="شماره شبا را وارد کنید" value="{{ old('sheba_number') }}">
+              <label for="sheba_number" class="control-label">شماره شبا :<span
+                  class="text-danger">&starf;</span></label>
+              <input type="text" id="sheba_number" class="form-control" name="sheba_number"
+                     placeholder="شماره شبا را وارد کنید" value="{{ old('sheba_number') }}">
               <x-core::show-validation-error name="sheba_number"/>
             </div>
           </div>
@@ -152,18 +165,20 @@
 
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
-              <label for="resume" class="control-label">رزومه :<span class="text-danger">&starf;</span></label>
-              <input type="file" id="resume" class="form-control" name="resume" value="{{ old('resume') }}">
-              <x-core::show-validation-error name="resume"/>
+              <label for="address" class="control-label">آدرس :<span
+                  class="text-danger">&starf;</span></label>
+              <input type="text" id="address" class="form-control" name="address"
+                     placeholder="آدرس را وارد کنید" value="{{ old('address') }}">
+              <x-core::show-validation-error name="address"/>
             </div>
           </div>
 
           <div class="col-12">
             <div class="form-group">
-              <label for="address" class="control-label">آدرس:<span class="text-danger">&starf;</span></label>
-              <textarea name="address" id="address" class="form-control" rows="3" placeholder="محل سکونت را وارد کنید"
-                        required>{{ old('address') }}</textarea>
-              <x-core::show-validation-error name="address"/>
+              <label for="resume" class="control-label">رزومه:<span class="text-danger">&starf;</span></label>
+              <textarea name="resume" id="resume" class="form-control" rows="7" placeholder="رزومه را وارد کنید"
+                        required>{{ old('resume') }}</textarea>
+              <x-core::show-validation-error name="resume"/>
             </div>
           </div>
 
@@ -173,4 +188,23 @@
       </form>
     </div>
   </div>
+@endsection
+
+@section('scripts')
+  <script>
+    function loadCitiesByProvinceId() {
+      let provinceId = $('#province_id').val();
+
+      let token = $('meta[name="csrf-token"]').attr('content');
+      $.ajax({
+        url: '{{ route("admin.get-cities-by-province-id") }}',
+        type: 'POST',
+        data: {province_id: provinceId},
+        headers: {'X-CSRF-TOKEN': token},
+        success: function (response) {
+          $('#city_id').html(response);
+        }
+      });
+    }
+  </script>
 @endsection

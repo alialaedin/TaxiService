@@ -24,6 +24,8 @@
         @method('PATCH')
         <div class="row">
 
+          <input type="hidden" id="model_city_id" value="{{ $school->city_id }}">
+
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="title" class="control-label"> عنوان مدرسه: <span class="text-danger">&starf;</span></label>
@@ -145,21 +147,25 @@
 
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
-              <label for="city_id" class="control-label">شهر و استان :<span class="text-danger">&starf;</span></label>
-              <select name="city_id" id="city_id" class="form-control">
+              <label for="province_id" class="control-label">استان :<span class="text-danger">&starf;</span></label>
+              <select name="province_id" id="province_id" class="form-control" onchange="loadCitiesByProvinceId()">
                 @foreach($provinces as $province)
-                  <optgroup label="{{ $province->name }}" class="text-muted">
-                    @foreach ($province->cities as $city)
-                      <option
-                        value="{{ $city->id }}"
-                        class="text-dark"
-                        @selected(old('city_id', $school->city_id) == $city->id)>
-                        {{ $city->name }}
-                      </option>
-                    @endforeach
-                  </optgroup>
+                  <option
+                    value="{{ $province->id }}"
+                    class="text-dark"
+                    @selected(old('province_id', $school->city->province->id) == $province->id)>
+                    {{ $province->name }}
+                  </option>
                 @endforeach
               </select>
+              <x-core::show-validation-error name="province_id"/>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 col-12">
+            <div class="form-group">
+              <label for="city_id" class="control-label">شهر :<span class="text-danger">&starf;</span></label>
+              <select name="city_id" id="city_id" class="form-control"></select>
               <x-core::show-validation-error name="city_id"/>
             </div>
           </div>
@@ -205,4 +211,26 @@
       </form>
     </div>
   </div>
+@endsection
+@section('scripts')
+  <script>
+    function loadCitiesByProvinceId() {
+      let provinceId = $('#province_id').val();
+      let modelCityId = $('#model_city_id').val();
+
+      let token = $('meta[name="csrf-token"]').attr('content');
+      $.ajax({
+        url: '{{ route("admin.get-cities-by-province-id") }}',
+        type: 'POST',
+        data: {
+          province_id: provinceId,
+          model_city_id: modelCityId
+        },
+        headers: {'X-CSRF-TOKEN': token},
+        success: function (response) {
+          $('#city_id').html(response);
+        }
+      });
+    }
+  </script>
 @endsection

@@ -46,6 +46,10 @@ return [
             'driver' => 'session',
             'provider' => 'companies',
         ],
+        'family-web' => [
+            'driver' => 'session',
+            'provider' => 'families',
+        ],
     ],
 
     /*
@@ -77,6 +81,10 @@ return [
         'companies' => [
             'driver' => 'eloquent',
             'model' => \Modules\Company\Models\Company::class,
+        ],
+        'families' => [
+            'driver' => 'eloquent',
+            'model' => \Modules\Family\Models\Family::class,
         ],
 
         // 'users' => [

@@ -4,6 +4,7 @@ namespace Modules\Driver\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Modules\Company\Models\Company;
@@ -15,8 +16,17 @@ class DriverController extends Controller
 {
   public function index(): View
   {
+    $companyId = request('company_id');
+    $gender = request('gender');
+    $name = request('name');
+    $status = request('status');
+
     $drivers = Driver::query()
       ->select(['id', 'company_id', 'gender', 'name', 'mobile', 'driver_image', 'status', 'car_name'])
+      ->when($companyId, fn(Builder $query) => $query->where('company_id', '=', $companyId))
+      ->when($gender, fn(Builder $query) => $query->where('gender', '=', $gender))
+      ->when($name, fn(Builder $query) => $query->where('name', 'like', "%$name%"))
+      ->when(isset($status), fn(Builder $query) => $query->where('status', '=', $status))
       ->with('company:id,title')
       ->latest('id')
       ->paginate()
@@ -24,12 +34,14 @@ class DriverController extends Controller
 
     $totalDrivers = $drivers->total();
 
-    return view('driver::index', compact(['totalDrivers', 'drivers']));
+    $companies = Company::getActiveCompanies();
+
+    return view('driver::admin.index', compact(['totalDrivers', 'drivers', 'companies']));
   }
 
   public function show(Driver $driver): View
   {
-    return view('driver::show', compact('driver'));
+    return view('driver::admin.show', compact('driver'));
   }
 
   public function create(): View
@@ -41,7 +53,7 @@ class DriverController extends Controller
     $acceptedLicenseImageMimes = Driver::ACCEPTED_LICENSE_MIME_TYPES;
     $acceptedDriverImageMimes = Driver::ACCEPTED_IMAGE_MIME_TYPES;
 
-    return view('driver::create', compact([
+    return view('driver::admin.create', compact([
       'carTypes',
       'genders',
       'companies',
@@ -75,7 +87,7 @@ class DriverController extends Controller
     $acceptedLicenseImageMimes = Driver::ACCEPTED_LICENSE_MIME_TYPES;
     $acceptedDriverImageMimes = Driver::ACCEPTED_IMAGE_MIME_TYPES;
 
-    return view('driver::edit', compact([
+    return view('driver::admin.edit', compact([
       'driver',
       'carTypes',
       'genders',
@@ -130,5 +142,4 @@ class DriverController extends Controller
 
     return $carTypes;
   }
-
 }

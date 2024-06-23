@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Modules\Driver\Http\Controllers\Admin\DriverController as AdminDriverController;
+use Modules\Driver\Http\Controllers\Company\DriverController as CompanyDriverController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,5 +15,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:admin-web')->prefix('/admin')->name('admin.')->group(function() {
-  Route::resource('/drivers', \Modules\Driver\Http\Controllers\Admin\DriverController::class);
+  Route::resource('/drivers', AdminDriverController::class);
+});
+
+Route::middleware('auth:company-web')->prefix('/company')->name('company.')->group(function() {
+  Route::resource('/drivers', CompanyDriverController::class);
 });
