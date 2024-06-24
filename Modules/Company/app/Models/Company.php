@@ -2,6 +2,7 @@
 
 namespace Modules\Company\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Modules\Area\Models\City;
 use Modules\Core\Models\BaseAuthModel;
 use Modules\Core\Models\BaseModelTrait;
+use Modules\School\Models\School;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -103,5 +105,10 @@ class Company extends BaseAuthModel
   public function city(): BelongsTo
   {
     return $this->belongsTo(City::class);
+  }
+
+  public function schools(): BelongsToMany
+  {
+    return $this->belongsToMany(School::class);
   }
 }

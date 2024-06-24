@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Auth\Http\Controllers\Admin\AuthController as AdminAuthController;
 use Modules\Auth\Http\Controllers\Company\AuthController as CompanyAuthController;
+use Modules\Auth\Http\Controllers\Family\AuthController as FamilyAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,19 @@ Route::prefix('/company')->name('company.')->group(function () {
   });
   Route::middleware('auth:company-web')
     ->post('/logout', [CompanyAuthController::class, 'logout'])
+    ->name('logout');
+});
+
+Route::prefix('/family')->name('family.')->group(function () {
+  Route::middleware('guest')->group(function () {
+    Route::get('/login', [FamilyAuthController::class, 'showLoginForm'])->name('login.form');
+    Route::post('/token' , [FamilyAuthController::class, 'sendToken'])->name('send-token');
+    Route::post('/register-login' , [FamilyAuthController::class, 'registerLogin'])->name('register-login');
+    Route::post('/verify' , [FamilyAuthController::class, 'verify'])->name('verify');
+    Route::post('/register' , [FamilyAuthController::class, 'register'])->name('register');
+  });
+  Route::middleware('auth:family-web')
+    ->post('/logout', [FamilyAuthController::class, 'logout'])
     ->name('logout');
 });
 

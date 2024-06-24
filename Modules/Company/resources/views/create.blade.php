@@ -14,14 +14,15 @@
     </ol>
   </div>
   <div class="card">
-    <div class="card-header">
+    <div class="card-header border-bottom-0">
       <p class="card-title">ثبت شرکت جدید</p>
     </div>
     <div class="card-body">
       <form action="{{ route('admin.companies.store') }}" method="post" class="save" enctype="multipart/form-data">
         @csrf
-        <div class="row">
 
+        <p class="header fs-20 p-2">مشخصات شرکت</p>
+        <div class="row mb-3">
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="title" class="control-label"> عنوان شرکت: <span class="text-danger">&starf;</span></label>
@@ -84,20 +85,10 @@
               <x-core::show-validation-error name="city_id"/>
             </div>
           </div>
+        </div>
 
-          <div class="col-lg-4 col-md-6 col-12">
-            <div class="form-group">
-              <label for="status" class="control-label">وضعیت :<span class="text-danger">&starf;</span></label>
-              <select name="status" id="status" class="form-control">
-                <option value="" class="text-muted">وضعیت را انتخاب کنید</option>
-                @foreach(config('core.bool_statuses') as $value => $label)
-                  <option value="{{ $value }}" @selected(old('status') == "$value")>{{ $label }}</option>
-                @endforeach
-              </select>
-              <x-core::show-validation-error name="status"/>
-            </div>
-          </div>
-
+        <p class="header fs-20 p-2">اطلاعات کاربری</p>
+        <div class="row mb-3">
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="username" class="control-label">نام کاربری :<span class="text-danger">&starf;</span></label>
@@ -124,7 +115,10 @@
               <x-core::show-validation-error name="password_confirmation"/>
             </div>
           </div>
+        </div>
 
+        <p class="header fs-20 p-2">اطلاعات بانکی</p>
+        <div class="row mb-3">
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="account_number" class="control-label">شماره حساب :<span
@@ -154,7 +148,10 @@
               <x-core::show-validation-error name="sheba_number"/>
             </div>
           </div>
+        </div>
 
+        <p class="header fs-20 p-2">سایر اطلاعات</p>
+        <div class="row mb-3">
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="logo" class="control-label">لوگو :<span class="text-danger">&starf;</span></label>
@@ -162,7 +159,6 @@
               <x-core::show-validation-error name="logo"/>
             </div>
           </div>
-
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="address" class="control-label">آدرس :<span
@@ -172,7 +168,18 @@
               <x-core::show-validation-error name="address"/>
             </div>
           </div>
-
+          <div class="col-lg-4 col-md-6 col-12">
+            <div class="form-group">
+              <label for="status" class="control-label">وضعیت :<span class="text-danger">&starf;</span></label>
+              <select name="status" id="status" class="form-control">
+                <option value="" class="text-muted">وضعیت را انتخاب کنید</option>
+                @foreach(config('core.bool_statuses') as $value => $label)
+                  <option value="{{ $value }}" @selected(old('status') == "$value")>{{ $label }}</option>
+                @endforeach
+              </select>
+              <x-core::show-validation-error name="status"/>
+            </div>
+          </div>
           <div class="col-12">
             <div class="form-group">
               <label for="resume" class="control-label">رزومه:<span class="text-danger">&starf;</span></label>
@@ -181,7 +188,21 @@
               <x-core::show-validation-error name="resume"/>
             </div>
           </div>
+        </div>
 
+        <p class="header fs-20 p-2">انتساب مدرسه (ها) به شرکت</p>
+        <div class="row">
+          @foreach($schools as $school)
+            <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+              <div class="form-group">
+                <label class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" name="schools[]"
+                         value="{{ $school->id }}">
+                  <span class="custom-control-label">{{ $school->title }}</span>
+                </label>
+              </div>
+            </div>
+          @endforeach
         </div>
 
         <x-core::store-button/>

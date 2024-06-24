@@ -29,6 +29,8 @@ class CompanyStoreRequest extends FormRequest
       'logo' => ['required', 'image', 'mimes:png,jpg'],
       'resume' => ['required', 'string', 'min:3'],
       'address' => ['required', 'string', 'min:3'],
+      'schools' => ['required', 'array'],
+      'schools.*' => ['required', 'integer', Rule::exists('schools', 'id')],
     ];
   }
 

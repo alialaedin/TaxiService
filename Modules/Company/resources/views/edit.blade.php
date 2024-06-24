@@ -14,18 +14,20 @@
     </ol>
   </div>
   <div class="card">
-    <div class="card-header">
+    <div class="card-header border-bottom-0">
       <p class="card-title">ویرایش شرکت - کد {{ $company->id }}</p>
       <x-core::card-options/>
     </div>
     <div class="card-body">
       <form action="{{ route('admin.companies.update', $company) }}" method="post" class="save" enctype="multipart/form-data">
+
         @csrf
         @method('PATCH')
-        <div class="row">
 
-          <input type="hidden" id="model_city_id" value="{{ $company->city_id }}">
+        <input type="hidden" id="model_city_id" value="{{ $company->city_id }}">
 
+        <p class="header fs-20 p-2">مشخصات شرکت</p>
+        <div class="row mb-3">
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="title" class="control-label"> عنوان شرکت: <span class="text-danger">&starf;</span></label>
@@ -34,7 +36,6 @@
               <x-core::show-validation-error name="title"/>
             </div>
           </div>
-
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="name" class="control-label"> نام و نام خانوادگی: <span
@@ -44,7 +45,6 @@
               <x-core::show-validation-error name="name"/>
             </div>
           </div>
-
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="mobile" class="control-label"> شماره موبایل: <span class="text-danger">&starf;</span></label>
@@ -53,7 +53,6 @@
               <x-core::show-validation-error name="mobile"/>
             </div>
           </div>
-
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="telephone" class="control-label"> تلفن ثابت:</label>
@@ -62,7 +61,6 @@
               <x-core::show-validation-error name="telephone"/>
             </div>
           </div>
-
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="province_id" class="control-label">استان :<span class="text-danger">&starf;</span></label>
@@ -79,7 +77,6 @@
               <x-core::show-validation-error name="province_id"/>
             </div>
           </div>
-
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="city_id" class="control-label">شهر :<span class="text-danger">&starf;</span></label>
@@ -87,7 +84,69 @@
               <x-core::show-validation-error name="city_id"/>
             </div>
           </div>
+        </div>
 
+        <p class="header fs-20 p-2">اطلاعات کاربری</p>
+        <div class="row mb-3">
+          <div class="col-lg-4 col-md-6 col-12">
+            <div class="form-group">
+              <label for="username" class="control-label">نام کاربری :<span class="text-danger">&starf;</span></label>
+              <input type="text" id="username" class="form-control" name="username"
+                     placeholder="نام کاربری را وارد کنید" value="{{ old('username', $company->username) }}">
+              <x-core::show-validation-error name="username"/>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-12">
+            <div class="form-group">
+              <label for="password" class="control-label"> کلمه عبور: </label>
+              <input type="password" id="password" class="form-control" name="password"
+                     placeholder="کلمه عبور را وارد کنید">
+              <x-core::show-validation-error name="password"/>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-12">
+            <div class="form-group">
+              <label for="password_confirmation" class="control-label">تکرار کلمه عبور:</label>
+              <input type="password" id="password_confirmation" class="form-control" name="password_confirmation"
+                     placeholder="تکرار کلمه عبور را وارد کنید">
+              <x-core::show-validation-error name="password_confirmation"/>
+            </div>
+          </div>
+        </div>
+
+        <p class="header fs-20 p-2">اطلاعات بانکی</p>
+        <div class="row mb-3">
+          <div class="col-lg-4 col-md-6 col-12">
+            <div class="form-group">
+              <label for="account_number" class="control-label">شماره حساب :<span
+                  class="text-danger">&starf;</span></label>
+              <input type="text" id="account_number" class="form-control" name="account_number"
+                     placeholder="شماره حساب را وارد کنید" value="{{ old('account_number', $company->account_number) }}">
+              <x-core::show-validation-error name="account_number"/>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-12">
+            <div class="form-group">
+              <label for="card_number" class="control-label">شماره کارت :<span
+                  class="text-danger">&starf;</span></label>
+              <input type="text" id="card_number" class="form-control" name="card_number"
+                     placeholder="شماره کارت را وارد کنید" value="{{ old('card_number', $company->card_number) }}">
+              <x-core::show-validation-error name="card_number"/>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-12">
+            <div class="form-group">
+              <label for="sheba_number" class="control-label">شماره شبا :<span
+                  class="text-danger">&starf;</span></label>
+              <input type="text" id="sheba_number" class="form-control" name="sheba_number"
+                     placeholder="شماره شبا را وارد کنید" value="{{ old('sheba_number', $company->sheba_number) }}">
+              <x-core::show-validation-error name="sheba_number"/>
+            </div>
+          </div>
+        </div>
+
+        <p class="header fs-20 p-2">سایر اطلاعات</p>
+        <div class="row mb-3">
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="status" class="control-label">وضعیت :<span class="text-danger">&starf;</span></label>
@@ -100,64 +159,6 @@
               <x-core::show-validation-error name="status"/>
             </div>
           </div>
-
-          <div class="col-lg-4 col-md-6 col-12">
-            <div class="form-group">
-              <label for="username" class="control-label">نام کاربری :<span class="text-danger">&starf;</span></label>
-              <input type="text" id="username" class="form-control" name="username"
-                     placeholder="نام کاربری را وارد کنید" value="{{ old('username', $company->username) }}">
-              <x-core::show-validation-error name="username"/>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 col-12">
-            <div class="form-group">
-              <label for="password" class="control-label"> کلمه عبور: </label>
-              <input type="password" id="password" class="form-control" name="password"
-                     placeholder="کلمه عبور را وارد کنید">
-              <x-core::show-validation-error name="password"/>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 col-12">
-            <div class="form-group">
-              <label for="password_confirmation" class="control-label"></label>
-              <input type="password" id="password_confirmation" class="form-control" name="password_confirmation"
-                     placeholder="تکرار کلمه عبور را وارد کنید">
-              <x-core::show-validation-error name="password_confirmation"/>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 col-12">
-            <div class="form-group">
-              <label for="account_number" class="control-label">شماره حساب :<span
-                  class="text-danger">&starf;</span></label>
-              <input type="text" id="account_number" class="form-control" name="account_number"
-                     placeholder="شماره حساب را وارد کنید" value="{{ old('account_number', $company->account_number) }}">
-              <x-core::show-validation-error name="account_number"/>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 col-12">
-            <div class="form-group">
-              <label for="card_number" class="control-label">شماره کارت :<span
-                  class="text-danger">&starf;</span></label>
-              <input type="text" id="card_number" class="form-control" name="card_number"
-                     placeholder="شماره کارت را وارد کنید" value="{{ old('card_number', $company->card_number) }}">
-              <x-core::show-validation-error name="card_number"/>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 col-12">
-            <div class="form-group">
-              <label for="sheba_number" class="control-label">شماره شبا :<span
-                  class="text-danger">&starf;</span></label>
-              <input type="text" id="sheba_number" class="form-control" name="sheba_number"
-                     placeholder="شماره شبا را وارد کنید" value="{{ old('sheba_number', $company->sheba_number) }}">
-              <x-core::show-validation-error name="sheba_number"/>
-            </div>
-          </div>
-
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="logo" class="control-label">لوگو :</label>
@@ -165,7 +166,6 @@
               <x-core::show-validation-error name="logo"/>
             </div>
           </div>
-
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
               <label for="address" class="control-label">آدرس :<span
@@ -175,7 +175,6 @@
               <x-core::show-validation-error name="address"/>
             </div>
           </div>
-
           <div class="col-12">
             <div class="form-group">
               <label for="resume" class="control-label">رزومه:<span class="text-danger">&starf;</span></label>
@@ -184,7 +183,25 @@
               <x-core::show-validation-error name="resume"/>
             </div>
           </div>
+        </div>
 
+        <p class="header fs-20 p-2">انتساب مدرسه (ها) به شرکت</p>
+        <div class="row">
+          @foreach($schools as $school)
+            <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+              <div class="form-group">
+                <label class="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    name="schools[]"
+                    value="{{ $school->id }}"
+                    @checked($company->schools->contains($school->id))>
+                  <span class="custom-control-label">{{ $school->title }}</span>
+                </label>
+              </div>
+            </div>
+          @endforeach
         </div>
 
         <x-core::update-button/>

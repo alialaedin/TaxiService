@@ -12,6 +12,7 @@ use Modules\Area\Models\Province;
 use Modules\Company\Http\Requests\Admin\CompanyStoreRequest;
 use Modules\Company\Http\Requests\Admin\CompanyUpdateRequest;
 use Modules\Company\Models\Company;
+use Modules\School\Models\School;
 
 class CompanyController extends Controller
 {
@@ -44,8 +45,9 @@ class CompanyController extends Controller
   public function show(Company $company): View
   {
     $company->load([
-      'city' => fn($query) => $query->select('id', 'name', 'province_id'),
-      'city.province' => fn($query) => $query->select('id', 'name')
+      'schools',
+      'city:id,name,province_id',
+      'city.province:id,name'
     ]);
 
     return view('company::show', compact('company'));
@@ -54,8 +56,9 @@ class CompanyController extends Controller
   public function create(): View
   {
     $provinces = Province::getAllProvincesWithCities();
+    $schools = School::getActiveSchools();
 
-    return view('company::create', compact('provinces'));
+    return view('company::create', compact(['provinces', 'schools']));
   }
 
   public function store(CompanyStoreRequest $request): RedirectResponse
@@ -68,7 +71,8 @@ class CompanyController extends Controller
       $inputs['logo'] = $request->file('logo')->store('company/logos', 'public');
     }
 
-    Company::query()->create($inputs);
+    $company = Company::query()->create($inputs);
+    $company->schools()->attach($request->input('schools'));
 
     return to_route('admin.companies.index');
   }
@@ -76,8 +80,9 @@ class CompanyController extends Controller
   public function edit(Company $company): View
   {
     $provinces = Province::getAllProvincesWithCities();
+    $schools = School::getActiveSchools();
 
-    return view('company::edit', compact(['company', 'provinces']));
+    return view('company::edit', compact(['company', 'provinces', 'schools']));
   }
 
   public function update(CompanyUpdateRequest $request, Company $company): RedirectResponse
@@ -92,7 +97,8 @@ class CompanyController extends Controller
       $inputs['logo'] = $request->file('logo')->store('company/logos', 'public');
     }
 
-    Company::query()->update($inputs);
+    $company::query()->update($inputs);
+    $company->schools()->sync($request->input('schools'));
 
     return to_route('admin.companies.index');
   }

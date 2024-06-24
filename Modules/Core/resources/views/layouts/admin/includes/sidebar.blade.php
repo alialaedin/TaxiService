@@ -2,7 +2,7 @@
   <div class="app-sidebar__user">
     <div class="dropdown user-pro-body text-center">
       <div class="user-info">
-        <span class="text-light fs-18">مدیریت فرش ابراهیمی</span>
+        <span class="text-light fs-18">پنل مدیریت</span>
       </div>
     </div>
   </div>

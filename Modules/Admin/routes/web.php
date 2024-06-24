@@ -15,7 +15,7 @@ use Modules\Admin\Http\Controllers\DashboardController;
 |
 */
 
-Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function() {
+Route::middleware('auth:admin-web')->prefix('/admin')->name('admin.')->group(function() {
 	Route::resource('/admins', AdminController::class);
 	Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });

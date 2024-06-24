@@ -2,9 +2,10 @@
 
 namespace Modules\School\Models;
 
-
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Modules\Area\Models\City;
+use Modules\Company\Models\Company;
 use Modules\Core\Models\BaseModel;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -71,6 +72,11 @@ class School extends BaseModel
     return static::TRAFFIC_BADGE_TYPES[$this->attributes['is_traffic']];
   }
 
+  public static function getActiveSchools()
+  {
+    return School::query()->active()->get();
+  }
+
   // Relations
   public function shift(): BelongsTo
   {
@@ -90,5 +96,10 @@ class School extends BaseModel
   public function city(): BelongsTo
   {
     return $this->belongsTo(City::class, 'city_id');
+  }
+
+  public function companies(): BelongsToMany
+  {
+    return $this->belongsToMany(Company::class);
   }
 }
