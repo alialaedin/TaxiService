@@ -16,10 +16,6 @@ use Modules\Auth\Http\Controllers\Family\AuthController as FamilyAuthController;
 |
 */
 
-Route::get('/', function () {
-  return view('auth::admin.login');
-});
-
 Route::prefix('/admin')->name('admin.')->group(function () {
   Route::middleware('guest')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login.form');
@@ -42,10 +38,15 @@ Route::prefix('/company')->name('company.')->group(function () {
 
 Route::prefix('/family')->name('family.')->group(function () {
   Route::middleware('guest')->group(function () {
-    Route::get('/login', [FamilyAuthController::class, 'showLoginForm'])->name('login.form');
+
+    Route::get('/login', [FamilyAuthController::class, 'showMobileForm'])->name('mobile-form');
     Route::post('/token' , [FamilyAuthController::class, 'sendToken'])->name('send-token');
-    Route::post('/register-login' , [FamilyAuthController::class, 'registerLogin'])->name('register-login');
+
+    Route::get('/login/{mobile}', [FamilyAuthController::class, 'showTokenForm'])->name('verify-form');
     Route::post('/verify' , [FamilyAuthController::class, 'verify'])->name('verify');
+    Route::get('/resend-token/{mobile}' , [FamilyAuthController::class, 'resendSmsToken'])->name('resend-token');
+
+    Route::get('/register/{mobile}', [FamilyAuthController::class, 'showRegisterForm'])->name('register-form');
     Route::post('/register' , [FamilyAuthController::class, 'register'])->name('register');
   });
   Route::middleware('auth:family-web')

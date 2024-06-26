@@ -1,10 +1,8 @@
 <?php
 
-namespace Modules\Family\Providers;
+namespace Modules\Dashboard\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Modules\Family\Events\SmsVerify;
-use Modules\Family\Listeners\SendSmsToken;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -13,12 +11,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array<string, array<int, string>>
      */
-    protected $listen = [
-        SmsVerify::class => [
-            SendSmsToken::class
-        ]
-
-    ];
+    protected $listen = [];
 
     /**
      * Indicates if events should be discovered.
