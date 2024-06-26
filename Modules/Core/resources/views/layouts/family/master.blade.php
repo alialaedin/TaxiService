@@ -13,7 +13,7 @@
 
   <title>@yield('title', config('app.name'))</title>
 
-  @include("core::layouts.includes.styles")
+  @include("core::layouts.family.includes.style")
 
   @yield("styles")
 
@@ -32,7 +32,7 @@
     @include("core::layouts.family.includes.navbar")
 
 
-    <div class="main-content px-5 py-1">
+    <div class="main-content px-5 py-5">
 
       @if($errors->any())
         @php
@@ -48,7 +48,7 @@
 </div>
 <a href="#" id="back-to-top"><span class="feather feather-chevrons-up"></span></a>
 
-@include("core::layouts.includes.scripts")
+@include("core::layouts.family.includes.scripts")
 
 @yield("scripts")
 

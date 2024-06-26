@@ -26,10 +26,6 @@ class RegisterRequest extends FormRequest
         'string',
         'min:3',
         'max:100'
-      ],
-      'email' => [
-        'nullable',
-        'email'
       ]
     ];
   }

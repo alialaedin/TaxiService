@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Dashboard\Http\Controllers\Family\DashboardController as FamilyDashboardController;
+use Modules\Admin\Http\Controllers\DashboardController as AdminDashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,3 +17,7 @@ use Modules\Dashboard\Http\Controllers\Family\DashboardController as FamilyDashb
 Route::middleware('auth:family-web')
   ->get('/family/dashboard', [FamilyDashboardController::class, 'index'])
   ->name('family.dashboard');
+
+Route::middleware('auth:admin-web')
+  ->get('/admin/dashboard', [AdminDashboardController::class, 'index'])
+  ->name('admin.dashboard');

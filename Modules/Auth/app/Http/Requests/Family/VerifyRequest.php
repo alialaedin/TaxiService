@@ -39,6 +39,7 @@ class VerifyRequest extends FormRequest
     $this->merge([
       'smsToken' => $smsToken,
     ]);
+
   }
 
   public function authorize(): bool

@@ -13,9 +13,6 @@ class Family extends BaseAuthModel
 
   const TOKEN_DIGITS = 4;
 
-  /**
-   * The attributes that are mass assignable.
-   */
   protected $fillable = [
     'name',
     'mobile',

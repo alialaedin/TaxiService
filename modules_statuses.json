@@ -8,5 +8,6 @@
     "Setting": true,
     "Driver": true,
     "Family": true,
-    "Dashboard": true
+    "Dashboard": true,
+    "Contract": true
 }

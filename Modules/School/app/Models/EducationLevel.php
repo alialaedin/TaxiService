@@ -18,6 +18,7 @@ class EducationLevel extends BaseModel
     '1' => 'success',
     '0' => 'danger'
   ];
+
   public const GENDERS = [
     'male' => 'مرد',
     'female' => 'زن'

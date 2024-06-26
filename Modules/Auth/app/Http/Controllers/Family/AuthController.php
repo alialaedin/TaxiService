@@ -6,19 +6,16 @@ use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Modules\Auth\Http\Requests\Admin\LogoutRequest;
-use Modules\Auth\Http\Requests\Family\RegisterLoginRequest;
 use Modules\Auth\Http\Requests\Family\RegisterRequest;
 use Modules\Auth\Http\Requests\Family\SendTokenRequest;
 use Modules\Auth\Http\Requests\Family\VerifyRequest;
-use Modules\Core\Helpers\Helpers;
 use Modules\Family\Events\SmsVerify;
 use Modules\Family\Models\Family;
-use Modules\Family\Models\SmsToken;
 
 class AuthController extends Controller
 {
@@ -44,8 +41,11 @@ class AuthController extends Controller
   public function sendToken(SendTokenRequest $request): RedirectResponse
   {
     try {
+
       $mobile = $request->input('mobile');
       $result = event(new SmsVerify($mobile));
+
+      Session::put('mobile', $mobile);
 
       if ($result[0]['status'] != 200) {
         return redirect()->back()->with([
@@ -53,7 +53,7 @@ class AuthController extends Controller
         ]);
       }
 
-      return to_route('family.verify-form', ['mobile' => $mobile]);
+      return to_route('family.verify-form');
 
     } catch (Exception $exception) {
 
@@ -66,8 +66,14 @@ class AuthController extends Controller
     }
   }
 
-  public function showTokenForm(string $mobile): View
+  public function showTokenForm(): View|RedirectResponse
   {
+    if (!Session::has('mobile')) {
+      return to_route('family.mobile-form');
+    }
+
+    $mobile = Session::get('mobile');
+
     return view('auth::family.token-form', compact('mobile'));
   }
 
@@ -83,13 +89,15 @@ class AuthController extends Controller
       $family = Family::query()->where('mobile', $mobile)->first();
 
       // Login
-      if ($family && Auth::guard('family-web')->attempt($request->only('mobile'))) {
+      if ($family) {
 
         if (!$family->active) {
           return redirect()->back()->with([
             'error' => 'شما غیر فعال شده اید و امکان ورود به پنل را ندارید!'
           ]);
         }
+
+        Auth::guard('family-web')->login($family);
 
         $request->session()->regenerate();
 
@@ -101,7 +109,7 @@ class AuthController extends Controller
       }
 
       // Register
-      return to_route('family.register-form', $mobile);
+      return to_route('family.register-form');
 
     } catch (Exception $exception) {
 
@@ -127,14 +135,22 @@ class AuthController extends Controller
     return redirect()->back();
   }
 
-  public function showRegisterForm(string $mobile): View
+  public function showRegisterForm(): View|RedirectResponse
   {
+    if (!Session::has('mobile')) {
+      return to_route('family.mobile-form');
+    }
+
+    $mobile = Session::get('mobile');
+
     return view('auth::family.register-form', compact('mobile'));
   }
 
   public function register(RegisterRequest $request): RedirectResponse
   {
     $family = Family::query()->create($request->all());
+
+    Auth::guard('family-web')->login($family);
     $request->session()->regenerate();
 
     $this->updateLastLoggedIn($family);

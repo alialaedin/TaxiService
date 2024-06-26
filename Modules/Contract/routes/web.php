@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Admin\Http\Controllers\AdminController;
-use Modules\Admin\Http\Controllers\DashboardController;
+use Modules\Contract\Http\Controllers\Family\ContractController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +14,7 @@ use Modules\Admin\Http\Controllers\DashboardController;
 |
 */
 
-Route::middleware('auth:admin-web')->prefix('/admin')->name('admin.')->group(function() {
-	Route::resource('/admins', AdminController::class);
-});
 
+Route::middleware('auth:family-web')->prefix('/family')->name('family.')->group(function() {
+  Route::resource('/contracts', ContractController::class);
+});
