@@ -16,5 +16,12 @@ use Modules\Contract\Http\Controllers\Family\ContractController;
 
 
 Route::middleware('auth:family-web')->prefix('/family')->name('family.')->group(function() {
+
+  Route::prefix('/contracts')->name('contracts.')->group(function() {
+    Route::post('/load-education-levels', [ContractController::class, 'loadEducationLevels'])->name('load-education-levels');
+    Route::post('/load-companies', [ContractController::class, 'loadCompanies'])->name('load-companies');
+    Route::post('/load-schools', [ContractController::class, 'loadSchools'])->name('load-schools');
+  });
+
   Route::resource('/contracts', ContractController::class);
 });
