@@ -12,46 +12,54 @@
             <ul class="list-group-item d-flex justify-content-center py-4">
               <li>
                 <button id="progress-step-1" onclick="changeTheStepInput(1)"
-                        class="px-5 py-3 border-0 bg-info text-white">پذیرش قوانین
+                        class="px-lg-5 py-3 border-0 bg-info text-white">پذیرش قوانین
                 </button>
               </li>
               <li>
-                <button id="progress-step-2" onclick="changeTheStepInput(2)" class="px-5 py-3 border-0 bg-transparent">
+                <button id="progress-step-2" onclick="changeTheStepInput(2)"
+                        class="px-lg-5 py-3 border-0 bg-transparent">
                   انتخاب جنسیت
                 </button>
               </li>
               <li>
-                <button id="progress-step-3" onclick="changeTheStepInput(3)" class="px-5 py-3 border-0 bg-transparent">
+                <button id="progress-step-3" onclick="changeTheStepInput(3)"
+                        class="px-lg-5 py-3 border-0 bg-transparent">
                   نوع مدرسه
                 </button>
               </li>
               <li>
-                <button id="progress-step-4" onclick="changeTheStepInput(4)" class="px-5 py-3 border-0 bg-transparent">
+                <button id="progress-step-4" onclick="changeTheStepInput(4)"
+                        class="px-lg-5 py-3 border-0 bg-transparent">
                   انتخاب مقطع مدرسه
                 </button>
               </li>
               <li>
-                <button id="progress-step-5" onclick="changeTheStepInput(5)" class="px-5 py-3 border-0 bg-transparent">
+                <button id="progress-step-5" onclick="changeTheStepInput(5)"
+                        class="px-lg-5 py-3 border-0 bg-transparent">
                   انتخاب مدرسه
                 </button>
               </li>
               <li>
-                <button id="progress-step-6" onclick="changeTheStepInput(6)" class="px-5 py-3 border-0 bg-transparent">
+                <button id="progress-step-6" onclick="changeTheStepInput(6)"
+                        class="px-xl -5 py-3 border-0 bg-transparent">
                   وارد کردن آدرس
                 </button>
               </li>
               <li>
-                <button id="progress-step-7" onclick="changeTheStepInput(7)" class="px-5 py-3 border-0 bg-transparent">
+                <button id="progress-step-7" onclick="changeTheStepInput(7)"
+                        class="px-lg-5 py-3 border-0 bg-transparent">
                   نوع سرویس
                 </button>
               </li>
               <li>
-                <button id="progress-step-8" onclick="changeTheStepInput(8)" class="px-5 py-3 border-0 bg-transparent">
+                <button id="progress-step-8" onclick="changeTheStepInput(8)"
+                        class="px-lg-5 py-3 border-0 bg-transparent">
                   انتخاب شرکت
                 </button>
               </li>
               <li>
-                <button id="progress-step-9" onclick="changeTheStepInput(9)" class="px-5 py-3 border-0 bg-transparent">
+                <button id="progress-step-9" onclick="changeTheStepInput(9)"
+                        class="px-lg-5 py-3 border-0 bg-transparent">
                   اطلاعات فرزند
                 </button>
               </li>
@@ -165,92 +173,83 @@
     const nextButton = $('#nextButton');
     const prevButton = $('#prevButton');
 
-    let counter = 1;
-    let newNextCounter = 0;
-    let newPrevCounter = 0;
+    let totalSteps = 9;
+    let completedSteps = 0;
+    let currentStep = 1;
 
     $(document).ready(function () {
 
       $('#rulesAndConditionCheckBox').on('change', function () {
         if ($(this).is(':checked')) {
           nextButton.prop('disabled', false);
-          nextButton.removeClass('btn-gray');
-          nextButton.addClass('btn-primary');
+          nextButton.removeClass('btn-gray').addClass('btn-primary');
         } else {
           nextButton.prop('disabled', true);
-          nextButton.removeClass('btn-primary');
-          nextButton.addClass('btn-gray');
+          nextButton.removeClass('btn-primary').addClass('btn-gray');
         }
       });
 
       nextButton.on('click', function () {
 
-        let pervInputStep = $(`#step-${counter}-inputs`);
-        let nextInputStep = $(`#step-${counter+1}-inputs`);
-
-        let pervProgressStepButton = $(`#progress-step-${counter}`);
-        let nextProgressStepButton = $(`#progress-step-${counter+1}`);
+        let currentInputStep = $(`#step-${currentStep}-inputs`);
+        let nextInputStep = $(`#step-${currentStep + 1}-inputs`);
 
         nextInputStep.removeClass('d-none');
-        pervInputStep.addClass('d-none');
+        currentInputStep.addClass('d-none');
 
-        if (newNextCounter <= counter) {
+        if (currentStep - completedSteps === 1) {
           $(this).prop('disabled', true);
-          $(this).removeClass('btn-primary');
-          $(this).addClass('btn-gray');
-        }else {
-          newNextCounter = counter++;
+          $(this).removeClass('btn-primary').addClass('btn-gray');
         }
 
-
-        if (newNextCounter !== 0) {
+        if (totalSteps - completedSteps + 1 !== totalSteps) {
           prevButton.prop('disabled', false);
-          prevButton.removeClass('btn-gray');
-          prevButton.addClass('btn-primary');
+          prevButton.removeClass('btn-gray').addClass('btn-primary');
         } else {
           prevButton.prop('disabled', true);
-          prevButton.removeClass('btn-primary');
-          prevButton.addClass('btn-gray');
+          prevButton.removeClass('btn-primary').addClass('btn-gray');
         }
 
-        pervProgressStepButton.removeClass('bg-info text-white');
-        pervProgressStepButton.addClass('bg-transparent');
+        let currentProgressStepButton = $(`#progress-step-${currentStep}`);
+        let nextProgressStepButton = $(`#progress-step-${currentStep + 1}`);
+
+        currentProgressStepButton.removeClass('bg-info text-white');
+        currentProgressStepButton.addClass('bg-transparent');
 
         nextProgressStepButton.removeClass('bg-transparent');
         nextProgressStepButton.addClass('bg-info text-white');
+
+        if (currentStep - completedSteps === 1) {
+          completedSteps++;
+        }
+
+        currentStep++;
+
       });
 
       prevButton.on('click', function () {
 
-        let pervInputStep = $(`#step-${counter}-inputs`);
-        let nextInputStep = $(`#step-${counter-1}-inputs`);
+        let currentInputStep = $(`#step-${currentStep}-inputs`);
+        let pervInputStep = $(`#step-${currentStep - 1}-inputs`);
 
-        let pervProgressStepButton = $(`#progress-step-${counter}`);
-        let nextProgressStepButton = $(`#progress-step-${counter-1}`);
+        pervInputStep.removeClass('d-none');
+        currentInputStep.addClass('d-none');
 
-        nextInputStep.removeClass('d-none');
-        pervInputStep.addClass('d-none');
+        currentStep--;
 
-        if (newPrevCounter >= counter) {
+        if (totalSteps - currentStep === totalSteps) {
           $(this).prop('disabled', true);
-          $(this).removeClass('btn-primary');
-          $(this).addClass('btn-gray');
-        }else {
-          newPrevCounter = counter--;
+          $(this).removeClass('btn-primary').addClass('btn-gray');
         }
 
-        if (newPrevCounter === 0) {
-          $(this).prop('disabled', true);
-          $(this).removeClass('btn-primary');
-          $(this).addClass('btn-gray');
-        }
+        // nextButton.prop('disabled', false);
+        // nextButton.removeClass('btn-gray').addClass('btn-primary');
 
-        nextButton.prop('disabled', false);
-        nextButton.removeClass('btn-gray');
-        nextButton.addClass('btn-primary');
+        let currentProgressStepButton = $(`#progress-step-${currentStep}`);
+        let nextProgressStepButton = $(`#progress-step-${currentStep - 1}`);
 
-        pervProgressStepButton.removeClass('bg-info text-white');
-        pervProgressStepButton.addClass('bg-transparent');
+        currentProgressStepButton.removeClass('bg-info text-white');
+        currentProgressStepButton.addClass('bg-transparent');
 
         nextProgressStepButton.removeClass('bg-transparent');
         nextProgressStepButton.addClass('bg-info text-white');
@@ -260,33 +259,31 @@
     });
 
     function changeTheStepInput(step) {
-      if (step < counter) {
-        let pervProgressStepButton = $(`#progress-step-${counter}`);
+      if (step < currentStep) {
+        let currentProgressStepButton = $(`#progress-step-${currentStep}`);
         let nextProgressStepButton = $(`#progress-step-${step}`);
 
-        pervProgressStepButton.removeClass('bg-info text-white');
-        pervProgressStepButton.addClass('bg-transparent');
+        currentProgressStepButton.removeClass('bg-info text-white');
+        currentProgressStepButton.addClass('bg-transparent');
 
         nextProgressStepButton.removeClass('bg-transparent');
         nextProgressStepButton.addClass('bg-info text-white');
 
-        let pervInputStep = $(`#step-${counter}-inputs`);
+        let currentInputStep = $(`#step-${currentStep}-inputs`);
         let nextInputStep = $(`#step-${step}-inputs`);
 
         nextInputStep.removeClass('d-none');
-        pervInputStep.addClass('d-none');
+        currentInputStep.addClass('d-none');
 
         if (step === 1) {
           prevButton.prop('disabled', true);
-          prevButton.removeClass('btn-primary');
-          prevButton.addClass('btn-gray');
+          prevButton.removeClass('btn-primary').addClass('btn-gray');
         }
 
         nextButton.prop('disabled', false);
-        nextButton.removeClass('btn-gray');
-        nextButton.addClass('btn-primary');
+        nextButton.removeClass('btn-gray').addClass('btn-primary');
 
-        counter = step;
+        currentStep = step;
 
       }
     }
